@@ -1,16 +1,14 @@
-<header class="sticky top-0 z-[100]">
+<header
+  class="sticky top-0 z-[100] transition-[background,backdrop-filter,border-color] duration-300 border-b border-transparent"
+  id="main-header"
+>
   <nav class="flex items-center gap-8 max-w-[1200px] mx-auto px-6 h-[52px]">
     <a
       href="/"
       class="shrink-0 no-underline"
       aria-label="Sintrac Engineering - Inicio"
     >
-      <!-- Sustituye por: <img src="/logo.svg" alt="Sintrac Engineering" width="140" height="36" /> -->
-      <span
-        class="text-base font-semibold tracking-[-0.02em] text-[var(--color-text)]"
-      >
-        Sintrac Engineering
-      </span>
+      <img src="/logo.png" alt="Sintrac Engineering" height="36" class="h-9 w-auto" />
     </a>
 
     <ul
@@ -21,25 +19,29 @@
         <a
           href="#proyectos"
           class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
-          >Proyectos</a>
+          >Proyectos</a
+        >
       </li>
       <li>
         <a
           href="#servicios"
           class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
-          >Servicios</a>
+          >Servicios</a
+        >
       </li>
       <li>
         <a
           href="#obras"
           class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
-          >Obras realizadas</a>
+          >Obras realizadas</a
+        >
       </li>
       <li>
         <a
           href="#nosotros"
           class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
-          >Nosotros</a>
+          >Nosotros</a
+        >
       </li>
     </ul>
 
@@ -79,35 +81,59 @@
         <a
           href="#proyectos"
           class="block px-2 py-[0.65rem] text-base text-(--color-text-secondary) no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-(--color-text)"
-          >Proyectos</a>
+          >Proyectos</a
+        >
       </li>
       <li>
         <a
           href="#servicios"
           class="block px-2 py-[0.65rem] text-base text-(--color-text-secondary) no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-(--color-text)"
-          >Servicios</a>
+          >Servicios</a
+        >
       </li>
       <li>
         <a
           href="#obras"
           class="block px-2 py-[0.65rem] text-base text-(--color-text-secondary) no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-(--color-text)"
-          >Obras realizadas</a>
+          >Obras realizadas</a
+        >
       </li>
       <li>
         <a
           href="#nosotros"
           class="block px-2 py-[0.65rem] text-base text-(--color-text-secondary) no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-(--color-text)"
-          >Nosotros</a>
+          >Nosotros</a
+        >
       </li>
       <li>
         <a
           href="#contacto"
           class="block mt-2 px-2 py-[0.65rem] text-base text-center font-medium no-underline rounded-lg bg-(--color-cta-bg) text-(--color-cta-text)"
-          >Contactar</a>
+          >Contactar</a
+        >
       </li>
     </ul>
   </div>
 </header>
+
+<script>
+  const header = document.getElementById("main-header") as HTMLElement;
+
+  function onScroll() {
+    if (window.scrollY > 10) {
+      header.style.background = "rgba(255,255,255,0.75)";
+      header.style.backdropFilter = "blur(16px)";
+      header.style.borderColor = "rgba(0,0,0,0.08)";
+    } else {
+      header.style.background = "transparent";
+      header.style.backdropFilter = "none";
+      header.style.borderColor = "transparent";
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+</script>
 
 <script>
   const hamburger = document.querySelector(".hamburger") as HTMLButtonElement;

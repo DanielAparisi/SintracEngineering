@@ -2,4 +2,107 @@
 
 ---
 
-<p></p>
+<footer class="w-full border-t border-(--color-border) bg-(--color-bg)">
+  <div class="w-full max-w-360 mx-auto px-6 md:px-12 lg:px-20 py-16">
+    <!-- Fila principal -->
+    <div class="flex flex-col md:flex-row justify-between gap-12">
+      <!-- Marca -->
+      <div class="flex flex-col gap-8 max-w-45">
+        <img src="/logo.png" alt="Sintrac Engineering" class="h-12 w-auto" />
+        <p class="text-sm text-(--color-text-muted) leading-relaxed">
+          Constructora inmobiliaria en San Sebastián de los Reyes. Más de 19
+          años construyendo en el norte de Madrid.
+        </p>
+      </div>
+
+      <!-- Navegación -->
+      <div class="flex flex-col gap-3">
+        <p
+          class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)"
+        >
+          Navegación
+        </p>
+        <ul class="flex flex-col gap-2 list-none m-0 p-0">
+          <li>
+            <a
+              href="#proyectos"
+              class="text-sm text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+              >Proyectos</a
+            >
+          </li>
+          <li>
+            <a
+              href="#servicios"
+              class="text-sm text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+              >Servicios</a
+            >
+          </li>
+          <li>
+            <a
+              href="#obras"
+              class="text-sm text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+              >Obras realizadas</a
+            >
+          </li>
+          <li>
+            <a
+              href="#nosotros"
+              class="text-sm text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+              >Nosotros</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contacto -->
+      <div class="flex flex-col gap-3">
+        <p
+          class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)"
+        >
+          Contacto
+        </p>
+        <ul class="flex flex-col gap-2 list-none m-0 p-0">
+          <li class="text-sm text-(--color-text-secondary)">
+            San Sebastián de los Reyes, Madrid
+          </li>
+          <li>
+            <a
+              href="tel:+34000000000"
+              class="text-sm text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+              >+34 000 000 000</a
+            >
+          </li>
+          <li>
+            <a
+              href="mailto:info@sintracengineering.es"
+              class="text-sm text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+              >info@sintracengineering.es</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Divisor + Copyright -->
+    <div
+      class="mt-12 pt-6 border-t border-(--color-border) flex flex-col sm:flex-row justify-between items-center gap-3"
+    >
+      <p class="text-xs text-(--color-text-muted)">
+        © {new Date().getFullYear()} Sintrac Engineering. Todos los derechos reservados.
+      </p>
+      <p class="text-xs text-(--color-text-muted)">
+        San Sebastián de los Reyes · Madrid · España
+      </p>
+    </div>
+
+    <!-- Créditos desarrollador -->
+    <div class="flex flex-col items-center gap-1 mt-6">
+      <p class="text-xs text-(--color-text-muted)">
+        Página web desarrollada por <a
+          class="text-black font-bold"
+          target="_blank"
+          href="https://github.com/DanielAparisi">Daniel Aparisi</a>
+      </p>
+    </div>
+  </div>
+</footer>
