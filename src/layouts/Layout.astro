@@ -3,6 +3,7 @@ import "@fontsource-variable/onest";
 import Background from "../components/Background.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import "../Css/global.css";
 
 interface Props {
   title: string;
@@ -140,40 +141,4 @@ const {
     <Footer />
   </body>
 
-  <style is:global>
-    :root {
-      color-scheme: light;
-
-      --color-bg:           #ffffff;
-      --color-bg-card:      #f8f8f8;
-      --color-bg-secondary: #f0f0f0;
-      --color-border:       rgba(0, 0, 0, 0.10);
-
-      --color-text:         #080808;
-      --color-text-secondary: #606060;
-      --color-text-muted:   #a0a0a0;
-
-      --color-cta-bg:       #080808;
-      --color-cta-text:     #ffffff;
-    }
-
-    html {
-      font-family: "Onest Variable", system-ui, sans-serif;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: transparent;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      color: var(--color-text);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-    }
-  </style>
 </html>

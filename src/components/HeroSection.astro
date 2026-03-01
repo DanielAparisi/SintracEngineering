@@ -1,0 +1,93 @@
+---
+import SectionContaner from "./SectionContaner.astro";
+---
+
+<SectionContaner id="hero" class="py-28 min-h-screen flex items-center">
+  <div
+    class="flex flex-col md:flex-row items-center justify-between gap-20 w-full"
+  >
+    <!-- IZQUIERDA: Texto -->
+    <div class="flex-1 flex flex-col gap-8">
+      <span
+        class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-text-muted) border border-(--color-border) rounded-full px-3 py-1 w-fit"
+      >
+        Desde 2003 · San Sebastián de los Reyes
+      </span>
+
+      <h1
+        class="text-5xl md:text-6xl font-bold leading-[1.1] tracking-[-0.03em] text-(--color-text)"
+      >
+        Construimos<br />el futuro<br />de Madrid
+      </h1>
+
+      <p
+        class="text-lg text-(--color-text-secondary) leading-relaxed max-w-md"
+      >
+        Más de 19 años desarrollando obra nueva residencial y promociones
+        inmobiliarias en el norte de Madrid. Calidad, compromiso y experiencia
+        en cada proyecto.
+      </p>
+
+      <div class="flex gap-3 flex-wrap">
+        <a
+          href="#proyectos"
+          class="px-6 py-3 rounded-full bg-(--color-cta-bg) text-(--color-cta-text) font-medium text-sm no-underline transition-[opacity,transform] duration-150 hover:opacity-75 hover:-translate-y-px"
+        >
+          Ver proyectos
+        </a>
+        <a
+          href="#contacto"
+          class="px-6 py-3 rounded-full border border-(--color-border) text-(--color-text) font-medium text-sm no-underline transition-[background,transform] duration-150 hover:bg-black/5 hover:-translate-y-px"
+        >
+          Contactar
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="flex gap-12 pt-8 border-t border-(--color-border)">
+        <div>
+          <p class="text-3xl font-bold text-(--color-text)">+19</p>
+          <p class="text-xs text-(--color-text-muted) mt-0.5">
+            Años de experiencia
+          </p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-(--color-text)">+50</p>
+          <p class="text-xs text-(--color-text-muted) mt-0.5">
+            Proyectos realizados
+          </p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-(--color-text)">SANSE</p>
+          <p class="text-xs text-(--color-text-muted) mt-0.5">
+            Norte de Madrid
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DERECHA: Historia -->
+    <div class="flex-1 w-full flex flex-col gap-6">
+      <span class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-text-muted)">
+        Nuestra historia
+      </span>
+      <h2 class="text-2xl font-bold text-(--color-text) leading-snug">
+        Dos décadas construyendo confianza
+      </h2>
+      <div class="flex flex-col gap-4 text-(--color-text-secondary) text-sm leading-relaxed">
+        <p>
+          Sintrac Engineering nació en 2003 en San Sebastián de los Reyes con una idea sencilla pero ambiciosa: construir viviendas en las que las familias pudieran confiar. Desde el primer día, apostamos por la calidad de los materiales, el rigor en la ejecución y una atención personalizada al cliente que nos diferenciaba de las grandes promotoras.
+        </p>
+        <p>
+          Durante los años más duros de la crisis inmobiliaria, mientras muchas empresas del sector cerraban sus puertas, Sintrac mantuvo el rumbo. Esa etapa nos enseñó a ser más eficientes, más creativos y, sobre todo, más cercanos a quienes depositaban su confianza en nosotros. Salimos de la crisis más sólidos de lo que entramos.
+        </p>
+        <p>
+          Con el paso de los años fuimos ampliando nuestra presencia en el norte de Madrid, sumando proyectos de viviendas unifamiliares, edificios plurifamiliares y rehabilitaciones integrales que hoy son referencia en la zona. Más de cincuenta obras entregadas respaldan nuestra trayectoria y cada una de ellas lleva el mismo sello: trabajo bien hecho, sin atajos.
+        </p>
+        <p>
+          Hoy seguimos creciendo con los mismos valores de siempre, incorporando las últimas técnicas constructivas y los estándares de eficiencia energética más exigentes. Cada proyecto que iniciamos es una nueva oportunidad de demostrar que en Sintrac Engineering la excelencia no es un objetivo, es una forma de trabajar.
+        </p>
+      </div>
+    </div>
+  </div>
+</SectionContaner>

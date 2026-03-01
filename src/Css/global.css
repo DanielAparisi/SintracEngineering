@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    --color-bg:           #ffffff;
+    --color-bg-card:      #f8f8f8;
+    --color-bg-secondary: #f0f0f0;
+    --color-border:       rgba(0, 0, 0, 0.10);
+
+    --color-text:           #080808;
+    --color-text-secondary: #606060;
+    --color-text-muted:     #a0a0a0;
+
+    --color-cta-bg:   #080808;
+    --color-cta-text: #ffffff;
+  }
+
+  html {
+    font-family: "Onest Variable", system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply flex flex-col min-h-screen bg-transparent;
+    color: var(--color-text);
+  }
+}
