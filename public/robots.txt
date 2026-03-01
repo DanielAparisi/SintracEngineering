@@ -1,0 +1,38 @@
+User-agent: *
+Allow: /
+
+# IA: ChatGPT / OpenAI
+User-agent: GPTBot
+Allow: /
+
+# IA: Google Gemini / AI Overviews
+User-agent: Google-Extended
+Allow: /
+
+# IA: Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# IA: Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+
+# IA: Meta
+User-agent: FacebookBot
+Allow: /
+
+# IA: Common Crawl (base de datos de muchos LLMs)
+User-agent: CCBot
+Allow: /
+
+# IA: Cohere
+User-agent: cohere-ai
+Allow: /
+
+# IA: Mistral
+User-agent: MistralBot
+Allow: /
+
+Sitemap: https://sintracengineering.es/sitemap-index.xml

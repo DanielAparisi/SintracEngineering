@@ -1,0 +1,219 @@
+<header>
+  <nav>
+    <a href="/" class="logo" aria-label="Sintrac Engineering - Inicio">
+      <!-- Sustituye esta línea por tu imagen: <img src="/logo.svg" alt="Sintrac Engineering" width="140" height="36" /> -->
+      <span class="logo-text">Sintrac Engineering</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#obras">Obras realizadas</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+    </ul>
+
+    <a href="#contacto" class="cta">Contactar</a>
+
+    <button class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Menú de navegación">
+    <ul role="list">
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#obras">Obras realizadas</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#contacto" class="cta-mobile">Contactar</a></li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const hamburger = document.querySelector(".hamburger") as HTMLButtonElement;
+  const mobileMenu = document.querySelector(".mobile-menu") as HTMLElement;
+
+  hamburger.addEventListener("click", () => {
+    const isOpen = mobileMenu.classList.toggle("open");
+    hamburger.classList.toggle("open", isOpen);
+    hamburger.setAttribute("aria-expanded", String(isOpen));
+    hamburger.setAttribute("aria-label", isOpen ? "Cerrar menú" : "Abrir menú");
+  });
+
+  document.querySelectorAll(".mobile-menu a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.remove("open");
+      hamburger.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", "false");
+      hamburger.setAttribute("aria-label", "Abrir menú");
+    });
+  });
+</script>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: transparent;
+    border-bottom: none;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 52px;
+  }
+
+  /* Logo */
+  .logo {
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+  }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0.25rem;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .nav-links a:hover {
+    color: var(--color-text);
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  /* CTA button */
+  .cta {
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    background: var(--color-cta-bg);
+    color: var(--color-cta-text);
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .cta:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: auto;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
+  }
+
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-menu a {
+    display: block;
+    padding: 0.65rem 0.5rem;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .mobile-menu a:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--color-text);
+  }
+
+  .cta-mobile {
+    margin-top: 0.5rem;
+    text-align: center;
+    background: var(--color-cta-bg) !important;
+    color: var(--color-cta-text) !important;
+    font-weight: 500;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .nav-links,
+    .cta {
+      display: none;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+  }
+</style>

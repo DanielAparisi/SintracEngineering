@@ -1,23 +1,179 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import "@fontsource-variable/onest";
+import Background from "../components/Background.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+}
+
+const {
+  title,
+  description,
+  keywords = "constructora inmobiliaria Madrid, obra nueva Madrid, constructora San Sebastián de los Reyes, promociones inmobiliarias Madrid norte, empresa constructora SANSE, Sintrac Engineering",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#d4af37" />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Sintrac Engineering" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="Sintrac Engineering" />
+    <meta property="og:locale" content="es_ES" />
+    <meta
+      property="og:image"
+      content="https://sintracengineering.es/og-image.jpg"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content="https://sintracengineering.es/og-image.jpg"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={Astro.url.href} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    <!-- Schema JSON-LD -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": ["LocalBusiness", "ConstructionCompany"],
+            "@id": "https://sintracengineering.es/#business",
+            "name": "Sintrac Engineering",
+            "url": "https://sintracengineering.es",
+            "description": "Constructora inmobiliaria con más de 19 años de experiencia en San Sebastián de los Reyes, Madrid.",
+            "foundingDate": "2003",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "San Sebastián de los Reyes",
+              "addressRegion": "Madrid",
+              "addressCountry": "ES"
+            },
+            "areaServed": {
+              "@type": "City",
+              "name": "Madrid"
+            },
+            "priceRange": "€€€"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://sintracengineering.es/#website",
+            "url": "https://sintracengineering.es",
+            "name": "Sintrac Engineering",
+            "inLanguage": "es-ES",
+            "publisher": { "@id": "https://sintracengineering.es/#business" },
+            "speakable": {
+              "@type": "SpeakableSpecification",
+              "cssSelector": ["h1", "h2", ".speakable"]
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://sintracengineering.es/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "¿Dónde opera Sintrac Engineering?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sintrac Engineering opera principalmente en San Sebastián de los Reyes y el norte de la Comunidad de Madrid, incluyendo Alcobendas, Tres Cantos y el Corredor del Henares."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Cuántos años de experiencia tiene Sintrac Engineering?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sintrac Engineering fue fundada en 2003 y cuenta con más de 19 años de experiencia en construcción e inmobiliaria."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Qué servicios ofrece Sintrac Engineering?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sintrac Engineering ofrece obra nueva residencial, promociones inmobiliarias, construcción industrial y gestión integral de proyectos en Madrid."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Cómo contactar con Sintrac Engineering?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Puedes contactar con Sintrac Engineering a través de su web oficial: https://sintracengineering.es"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <Background />
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+
+  <style is:global>
+    :root {
+      color-scheme: light;
+
+      --color-bg:           #ffffff;
+      --color-bg-card:      #f8f8f8;
+      --color-bg-secondary: #f0f0f0;
+      --color-border:       rgba(0, 0, 0, 0.10);
+
+      --color-text:         #080808;
+      --color-text-secondary: #606060;
+      --color-text-muted:   #a0a0a0;
+
+      --color-cta-bg:       #080808;
+      --color-cta-text:     #ffffff;
+    }
+
+    html {
+      font-family: "Onest Variable", system-ui, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: transparent;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: var(--color-text);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</html>
