@@ -4,18 +4,18 @@
   :root {
     color-scheme: light;
 
-    --color-bg:           #ffffff;
-    --color-bg-card:      #f8f8f8;
-    --color-bg-secondary: #f0f0f0;
-    --color-border:       rgba(0, 0, 0, 0.10);
+    --color-bg:           #2b1508;
+    --color-bg-card:      #381a09;
+    --color-bg-secondary: #4a2510;
+    --color-border:       rgba(255, 180, 130, 0.15);
 
-    --color-text:           #1a1a1a;
-    --color-text-secondary: #4a4a4a;
-    --color-text-muted:     #909090;
+    --color-text:           #f8f0ea;
+    --color-text-secondary: #c8a090;
+    --color-text-muted:     #8a6055;
 
     --color-accent:       #ea580c;
-    --color-accent-dark:  #c2410c;
-    --color-accent-light: #fff3e8;
+    --color-accent-dark:  #fb8c4a;
+    --color-accent-light: #4a2510;
 
     --color-cta-bg:   #ea580c;
     --color-cta-text: #ffffff;

@@ -130,14 +130,14 @@
 
   function onScroll() {
     if (window.scrollY > 10) {
-      header.style.background = "rgba(234,88,12,0.95)";
+      header.style.background = "rgba(43,21,8,0.92)";
       header.style.backdropFilter = "blur(16px)";
-      header.style.borderColor = "rgba(194,65,12,0.4)";
-      navLinks.forEach(l => { l.style.color = "rgba(255,255,255,0.85)"; });
-      hamburgerBars.forEach(b => { b.style.background = "white"; });
+      header.style.borderColor = "rgba(234,88,12,0.3)";
+      navLinks.forEach(l => { l.style.color = "rgba(248,240,234,0.8)"; });
+      hamburgerBars.forEach(b => { b.style.background = "#f8f0ea"; });
       if (ctaBtn) {
-        ctaBtn.style.background = "white";
-        ctaBtn.style.color = "#ea580c";
+        ctaBtn.style.background = "#ea580c";
+        ctaBtn.style.color = "white";
       }
     } else {
       header.style.background = "transparent";
