@@ -52,7 +52,8 @@
 
     <a
       href="#contacto"
-      class="header-cta shrink-0 text-sm font-medium px-4 py-[0.4rem] rounded-full bg-(--color-cta-bg) text-(--color-cta-text) no-underline transition-[opacity,background,color,transform] duration-150 hover:opacity-80 hover:-translate-y-px max-md:hidden"
+      class="header-cta shrink-0 text-sm font-medium px-4 py-[0.4rem] rounded-full no-underline transition-transform duration-150 hover:-translate-y-px max-md:hidden"
+      style="background:#0f2850; color:white;"
     >
       Contactar
     </a>
@@ -125,30 +126,29 @@
   const header = document.getElementById("main-header") as HTMLElement;
 
   const navLinks = header.querySelectorAll<HTMLElement>(".nav-link");
-  const ctaBtn = header.querySelector<HTMLElement>(".header-cta");
   const hamburgerBars = header.querySelectorAll<HTMLElement>(".hamburger span");
 
   function onScroll() {
     if (window.scrollY > 10) {
-      header.style.background = "rgba(43,21,8,0.92)";
+      header.style.background = "rgba(255, 255, 255, 0.85)";
       header.style.backdropFilter = "blur(16px)";
-      header.style.borderColor = "rgba(234,88,12,0.3)";
-      navLinks.forEach(l => { l.style.color = "rgba(248,240,234,0.8)"; });
-      hamburgerBars.forEach(b => { b.style.background = "#f8f0ea"; });
-      if (ctaBtn) {
-        ctaBtn.style.background = "#ea580c";
-        ctaBtn.style.color = "white";
-      }
+      header.style.borderColor = "rgba(15, 40, 80, 0.12)";
+      navLinks.forEach((l) => {
+        l.style.color = "#334155";
+      });
+      hamburgerBars.forEach((b) => {
+        b.style.background = "";
+      });
     } else {
       header.style.background = "transparent";
       header.style.backdropFilter = "none";
       header.style.borderColor = "transparent";
-      navLinks.forEach(l => { l.style.color = ""; });
-      hamburgerBars.forEach(b => { b.style.background = ""; });
-      if (ctaBtn) {
-        ctaBtn.style.background = "";
-        ctaBtn.style.color = "";
-      }
+      navLinks.forEach((l) => {
+        l.style.color = "";
+      });
+      hamburgerBars.forEach((b) => {
+        b.style.background = "";
+      });
     }
   }
 
