@@ -24,6 +24,7 @@ const enMarcha = [
 ];
 ---
 
+<div class="w-full bg-(--color-accent-light)">
 <SectionContaner id="proyectos" class="py-32">
 
   <!-- PROMOCIONES TERMINADAS -->
@@ -44,8 +45,8 @@ const enMarcha = [
           <div class="flex flex-col justify-between gap-8 flex-1 pr-0 md:pr-16">
             <div class="flex flex-col gap-5">
               <div class="flex items-center gap-3">
-                <span class="text-xs font-semibold tracking-[0.12em] uppercase text-(--color-text-muted)">Entregado</span>
-                <span class="text-xs font-bold text-(--color-text) bg-(--color-bg-secondary) px-2.5 py-1 rounded-full">{p.año}</span>
+                <span class="text-xs font-semibold tracking-[0.12em] uppercase text-(--color-accent-dark)">Entregado</span>
+                <span class="text-xs font-bold text-white bg-(--color-accent) px-2.5 py-1 rounded-full">{p.año}</span>
               </div>
               <h3 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-tight tracking-[-0.02em] text-(--color-text)">{p.nombre}</h3>
               <p class="text-sm text-(--color-text-muted)">{p.ubicacion}</p>
@@ -53,11 +54,11 @@ const enMarcha = [
             </div>
             <div class="flex gap-8">
               <div>
-                <p class="text-2xl font-bold text-(--color-text)">{p.viviendas}</p>
+                <p class="text-2xl font-bold text-(--color-accent)">{p.viviendas}</p>
                 <p class="text-xs text-(--color-text-muted) uppercase tracking-wide mt-0.5">Viviendas</p>
               </div>
               <div>
-                <p class="text-2xl font-bold text-(--color-text)">100%</p>
+                <p class="text-2xl font-bold text-(--color-accent)">100%</p>
                 <p class="text-xs text-(--color-text-muted) uppercase tracking-wide mt-0.5">Vendidas</p>
               </div>
             </div>
@@ -108,11 +109,11 @@ const enMarcha = [
             </div>
             <div class="flex gap-8">
               <div>
-                <p class="text-2xl font-bold text-(--color-text)">{p.viviendas}</p>
+                <p class="text-2xl font-bold text-(--color-accent)">{p.viviendas}</p>
                 <p class="text-xs text-(--color-text-muted) uppercase tracking-wide mt-0.5">Viviendas</p>
               </div>
               <div>
-                <p class="text-2xl font-bold text-(--color-text)">{p.prevision}</p>
+                <p class="text-2xl font-bold text-(--color-accent)">{p.prevision}</p>
                 <p class="text-xs text-(--color-text-muted) uppercase tracking-wide mt-0.5">Entrega prevista</p>
               </div>
             </div>
@@ -137,3 +138,4 @@ const enMarcha = [
   </div>
 
 </SectionContaner>
+</div>

@@ -9,11 +9,15 @@
     --color-bg-secondary: #f0f0f0;
     --color-border:       rgba(0, 0, 0, 0.10);
 
-    --color-text:           #080808;
-    --color-text-secondary: #606060;
-    --color-text-muted:     #a0a0a0;
+    --color-text:           #1a1a1a;
+    --color-text-secondary: #4a4a4a;
+    --color-text-muted:     #909090;
 
-    --color-cta-bg:   #080808;
+    --color-accent:       #ea580c;
+    --color-accent-dark:  #c2410c;
+    --color-accent-light: #fff3e8;
+
+    --color-cta-bg:   #ea580c;
     --color-cta-text: #ffffff;
   }
 

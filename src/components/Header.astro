@@ -8,7 +8,12 @@
       class="shrink-0 no-underline"
       aria-label="Sintrac Engineering - Inicio"
     >
-      <img src="/logo.png" alt="Sintrac Engineering" height="36" class="h-9 w-auto" />
+      <img
+        src="/logo.png"
+        alt="Sintrac Engineering"
+        height="36"
+        class="h-9 w-auto"
+      />
     </a>
 
     <ul
@@ -18,28 +23,28 @@
       <li>
         <a
           href="#proyectos"
-          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
+          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/10 nav-link"
           >Proyectos</a
         >
       </li>
       <li>
         <a
           href="#servicios"
-          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
+          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/10 nav-link"
           >Servicios</a
         >
       </li>
       <li>
         <a
           href="#obras"
-          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
+          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/10 nav-link"
           >Obras realizadas</a
         >
       </li>
       <li>
         <a
           href="#nosotros"
-          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
+          class="block px-3 py-[0.4rem] text-sm text-(--color-text-secondary) no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
           >Nosotros</a
         >
       </li>
@@ -47,7 +52,7 @@
 
     <a
       href="#contacto"
-      class="shrink-0 text-sm font-medium px-4 py-[0.4rem] rounded-full bg-[var(--color-cta-bg)] text-[var(--color-cta-text)] no-underline transition-[opacity,transform] duration-150 hover:opacity-80 hover:-translate-y-px max-md:hidden"
+      class="header-cta shrink-0 text-sm font-medium px-4 py-[0.4rem] rounded-full bg-(--color-cta-bg) text-(--color-cta-text) no-underline transition-[opacity,background,color,transform] duration-150 hover:opacity-80 hover:-translate-y-px max-md:hidden"
     >
       Contactar
     </a>
@@ -119,15 +124,31 @@
 <script>
   const header = document.getElementById("main-header") as HTMLElement;
 
+  const navLinks = header.querySelectorAll<HTMLElement>(".nav-link");
+  const ctaBtn = header.querySelector<HTMLElement>(".header-cta");
+  const hamburgerBars = header.querySelectorAll<HTMLElement>(".hamburger span");
+
   function onScroll() {
     if (window.scrollY > 10) {
-      header.style.background = "rgba(255,255,255,0.75)";
+      header.style.background = "rgba(234,88,12,0.95)";
       header.style.backdropFilter = "blur(16px)";
-      header.style.borderColor = "rgba(0,0,0,0.08)";
+      header.style.borderColor = "rgba(194,65,12,0.4)";
+      navLinks.forEach(l => { l.style.color = "rgba(255,255,255,0.85)"; });
+      hamburgerBars.forEach(b => { b.style.background = "white"; });
+      if (ctaBtn) {
+        ctaBtn.style.background = "white";
+        ctaBtn.style.color = "#ea580c";
+      }
     } else {
       header.style.background = "transparent";
       header.style.backdropFilter = "none";
       header.style.borderColor = "transparent";
+      navLinks.forEach(l => { l.style.color = ""; });
+      hamburgerBars.forEach(b => { b.style.background = ""; });
+      if (ctaBtn) {
+        ctaBtn.style.background = "";
+        ctaBtn.style.color = "";
+      }
     }
   }
 

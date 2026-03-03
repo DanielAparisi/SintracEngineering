@@ -9,7 +9,7 @@ import SectionContaner from "./SectionContaner.astro";
     <!-- IZQUIERDA: Texto -->
     <div class="flex-1 flex flex-col gap-8">
       <span
-        class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-text-muted) border border-(--color-border) rounded-full px-3 py-1 w-fit"
+        class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-accent-dark) border border-(--color-accent) rounded-full px-3 py-1 w-fit bg-(--color-accent-light)"
       >
         Desde 2003 · San Sebastián de los Reyes
       </span>
@@ -37,28 +37,28 @@ import SectionContaner from "./SectionContaner.astro";
         </a>
         <a
           href="#contacto"
-          class="px-6 py-3 rounded-full border border-(--color-border) text-(--color-text) font-medium text-sm no-underline transition-[background,transform] duration-150 hover:bg-black/5 hover:-translate-y-px"
+          class="px-6 py-3 rounded-full border-2 border-(--color-accent) text-(--color-accent-dark) font-medium text-sm no-underline transition-[background,transform,color] duration-150 hover:bg-(--color-accent) hover:text-white hover:-translate-y-px"
         >
           Contactar
         </a>
       </div>
 
       <!-- Stats -->
-      <div class="flex gap-12 pt-8 border-t border-(--color-border)">
+      <div class="flex gap-12 pt-8 border-t-2 border-(--color-accent)">
         <div>
-          <p class="text-3xl font-bold text-(--color-text)">+19</p>
+          <p class="text-3xl font-bold text-(--color-accent)">+19</p>
           <p class="text-xs text-(--color-text-muted) mt-0.5">
             Años de experiencia
           </p>
         </div>
         <div>
-          <p class="text-3xl font-bold text-(--color-text)">+50</p>
+          <p class="text-3xl font-bold text-(--color-accent)">+50</p>
           <p class="text-xs text-(--color-text-muted) mt-0.5">
             Proyectos realizados
           </p>
         </div>
         <div>
-          <p class="text-3xl font-bold text-(--color-text)">SANSE</p>
+          <p class="text-3xl font-bold text-(--color-accent)">SANSE</p>
           <p class="text-xs text-(--color-text-muted) mt-0.5">
             Norte de Madrid
           </p>
@@ -67,7 +67,7 @@ import SectionContaner from "./SectionContaner.astro";
     </div>
 
     <!-- DERECHA: Historia -->
-    <div class="flex-1 w-full flex flex-col gap-6">
+    <div class="flex-1 w-full flex flex-col gap-6 bg-(--color-accent-light) rounded-3xl p-8 border-l-4 border-(--color-accent)">
       <span class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-text-muted)">
         Nuestra historia
       </span>
