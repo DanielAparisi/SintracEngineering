@@ -1,0 +1,66 @@
+---
+/**
+ * Galería de fotos de una promoción.
+ *
+ * Cada tarjeta enlaza a la variante grande de la foto: así se puede ver a
+ * tamaño completo sin un lightbox con JavaScript (el sitio no carga JS de
+ * framework y no compensa romper eso por esto). El `srcset` deja que el móvil
+ * se descargue la variante de 768 px en lugar del original de 2560 px.
+ */
+import { fotoSrc, fotoSrcset, type Foto } from "../data/promociones";
+
+interface Props {
+  fotos: Foto[];
+  titulo?: string;
+}
+
+const { fotos, titulo = "Galería" } = Astro.props;
+
+/** Ancho real del hueco: 1 columna en móvil, 2 en tablet, 3 en escritorio. */
+const sizes = "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw";
+
+/** La variante mayor, para el enlace de "ver a tamaño completo". */
+const original = (f: Foto) => fotoSrcset(f).split(", ").at(-1)!.split(" ")[0];
+---
+
+{
+  fotos.length > 0 && (
+    <section class="flex flex-col gap-8" aria-labelledby="galeria">
+      <h2
+        id="galeria"
+        class="text-[clamp(1.75rem,4vw,3rem)] font-bold leading-tight tracking-[-0.03em] text-(--color-text)"
+      >
+        {titulo}
+      </h2>
+
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none m-0 p-0">
+        {fotos.map((foto) => (
+          <li class="m-0 p-0">
+            <a
+              href={original(foto)}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group block relative aspect-4/3 rounded-2xl overflow-hidden bg-(--color-bg-secondary) no-underline"
+              aria-label={`Ver a tamaño completo: ${foto.alt}`}
+            >
+              <img
+                src={fotoSrc(foto)}
+                srcset={fotoSrcset(foto)}
+                sizes={sizes}
+                width={foto.width}
+                height={foto.height}
+                alt={foto.alt}
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              />
+              <span class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 to-transparent p-4 pt-10 text-xs text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+                {foto.alt}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

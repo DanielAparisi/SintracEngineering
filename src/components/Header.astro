@@ -2,7 +2,10 @@
   class="sticky top-0 z-[100] transition-[background,backdrop-filter,border-color] duration-300 border-b border-transparent"
   id="main-header"
 >
-  <nav class="flex items-center gap-8 max-w-[1200px] mx-auto px-6 h-[52px]">
+  <nav
+    class="flex items-center gap-8 max-w-[1200px] mx-auto px-6 h-[52px]"
+    aria-label="Navegación principal"
+  >
     <a
       href="/"
       class="shrink-0 no-underline"
@@ -11,8 +14,9 @@
       <img
         src="/logo.png"
         alt="Sintrac Engineering"
+        width="107"
         height="36"
-        class="h-9 w-auto"
+        class="h-8 sm:h-9 w-auto"
       />
     </a>
 
@@ -76,11 +80,17 @@
     </button>
   </nav>
 
-  <div
+  <!--
+    Antes era role="dialog". No lo es: es un panel desplegable que empuja el
+    contenido, no una capa modal que atrape el foco. Marcarlo como diálogo
+    obliga al lector de pantalla a anunciar un contexto modal que no existe y
+    exige un focus trap que aquí sería incorrecto. El patrón correcto es
+    "disclosure": un botón con aria-expanded/aria-controls y un <nav> asociado.
+  -->
+  <nav
     id="mobile-menu"
     class="hidden flex-col px-6 pt-4 pb-6 border-t border-[var(--color-border)]"
-    role="dialog"
-    aria-label="Menú de navegación"
+    aria-label="Menú de navegación móvil"
   >
     <ul class="list-none m-0 p-0 flex flex-col gap-1" role="list">
       <li>
@@ -119,7 +129,7 @@
         >
       </li>
     </ul>
-  </div>
+  </nav>
 </header>
 
 <script>
@@ -157,30 +167,37 @@
 </script>
 
 <script>
-  const hamburger = document.querySelector(".hamburger") as HTMLButtonElement;
-  const mobileMenu = document.getElementById("mobile-menu") as HTMLElement;
+  const hamburger = document.querySelector<HTMLButtonElement>(".hamburger");
+  const mobileMenu = document.getElementById("mobile-menu");
 
-  hamburger.addEventListener("click", () => {
-    const isOpen = !mobileMenu.classList.contains("hidden");
-    mobileMenu.classList.toggle("hidden");
-    mobileMenu.classList.toggle("flex");
-    hamburger.classList.toggle("open", !isOpen);
-    hamburger.setAttribute("aria-expanded", String(!isOpen));
-    hamburger.setAttribute(
-      "aria-label",
-      !isOpen ? "Cerrar menú" : "Abrir menú",
-    );
-  });
+  // `as HTMLElement` solo silenciaba a TypeScript; en runtime un id que no
+  // existe seguía siendo null y rompía el script entero.
+  if (hamburger && mobileMenu) {
+    const setOpen = (open: boolean) => {
+      mobileMenu.classList.toggle("hidden", !open);
+      mobileMenu.classList.toggle("flex", open);
+      hamburger.classList.toggle("open", open);
+      hamburger.setAttribute("aria-expanded", String(open));
+      hamburger.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    };
 
-  document.querySelectorAll("#mobile-menu a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mobileMenu.classList.add("hidden");
-      mobileMenu.classList.remove("flex");
-      hamburger.classList.remove("open");
-      hamburger.setAttribute("aria-expanded", "false");
-      hamburger.setAttribute("aria-label", "Abrir menú");
+    const isOpen = () => hamburger.getAttribute("aria-expanded") === "true";
+
+    hamburger.addEventListener("click", () => setOpen(!isOpen()));
+
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
     });
-  });
+
+    // Escape cierra el menú y devuelve el foco al botón que lo abrió: sin esto,
+    // quien navega con teclado se queda con el foco dentro de un panel cerrado.
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) {
+        setOpen(false);
+        hamburger.focus();
+      }
+    });
+  }
 </script>
 
 <style>

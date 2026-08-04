@@ -3,19 +3,92 @@ import "@fontsource-variable/onest";
 import Background from "../components/Background.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import "../Css/global.css";
+import "../styles/global.css";
+import { company, faq, shortDescription } from "../data/company";
 
 interface Props {
   title: string;
   description: string;
   keywords?: string;
+  /** Imagen de las previsualizaciones (WhatsApp, LinkedIn). URL absoluta. */
+  image?: string;
 }
 
 const {
   title,
   description,
   keywords = "constructora inmobiliaria Madrid, obra nueva Madrid, constructora San Sebastián de los Reyes, promociones inmobiliarias Madrid norte, empresa constructora SANSE, Sintrac Engineering",
+  image = "https://sintracengineering.es/og-image.jpg",
 } = Astro.props;
+
+/**
+ * Un único bloque JSON-LD para todo el sitio, generado desde `company.ts`.
+ * Antes había dos entidades de negocio distintas (aquí y en `Ubication.astro`)
+ * con `@type` y dirección diferentes, lo que Google puede leer como dos
+ * negocios y repartir la autoridad local entre ambos.
+ */
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "GeneralContractor",
+      "@id": `${company.url}/#business`,
+      name: company.name,
+      url: company.url,
+      description: shortDescription,
+      foundingDate: String(company.foundingYear),
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: company.address.street,
+        postalCode: company.address.postalCode,
+        addressLocality: company.address.locality,
+        addressRegion: company.address.region,
+        addressCountry: company.address.country,
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: company.geo.latitude,
+        longitude: company.geo.longitude,
+      },
+      telephone: company.phone.e164,
+      email: company.email,
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [...company.openingHours.days],
+          opens: company.openingHours.opens,
+          closes: company.openingHours.closes,
+        },
+      ],
+      areaServed: company.areaServed.municipalities.map((name) => ({
+        "@type": "City",
+        name,
+      })),
+      priceRange: "€€€",
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${company.url}/#website`,
+      url: company.url,
+      name: company.name,
+      inLanguage: "es-ES",
+      publisher: { "@id": `${company.url}/#business` },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", "h2", ".speakable"],
+      },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${company.url}/#faq`,
+      mainEntity: faq.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -25,9 +98,9 @@ const {
     <meta name="description" content={description} />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#d4af37" />
+    <meta name="theme-color" content="#1E3A5F" />
     <meta name="keywords" content={keywords} />
-    <meta name="author" content="Sintrac Engineering" />
+    <meta name="author" content={company.name} />
     <meta name="robots" content="index, follow" />
 
     <!-- Open Graph -->
@@ -37,107 +110,29 @@ const {
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:site_name" content="Sintrac Engineering" />
     <meta property="og:locale" content="es_ES" />
-    <meta
-      property="og:image"
-      content="https://sintracengineering.es/og-image.jpg"
-    />
+    <meta property="og:image" content={image} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta
-      name="twitter:image"
-      content="https://sintracengineering.es/og-image.jpg"
-    />
+    <meta name="twitter:image" content={image} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={Astro.url.href} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
-    <!-- Schema JSON-LD -->
-    <script type="application/ld+json" is:inline>
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": ["LocalBusiness", "ConstructionCompany"],
-            "@id": "https://sintracengineering.es/#business",
-            "name": "Sintrac Engineering",
-            "url": "https://sintracengineering.es",
-            "description": "Constructora inmobiliaria con más de 19 años de experiencia en San Sebastián de los Reyes, Madrid.",
-            "foundingDate": "2003",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "San Sebastián de los Reyes",
-              "addressRegion": "Madrid",
-              "addressCountry": "ES"
-            },
-            "areaServed": {
-              "@type": "City",
-              "name": "Madrid"
-            },
-            "priceRange": "€€€"
-          },
-          {
-            "@type": "WebSite",
-            "@id": "https://sintracengineering.es/#website",
-            "url": "https://sintracengineering.es",
-            "name": "Sintrac Engineering",
-            "inLanguage": "es-ES",
-            "publisher": { "@id": "https://sintracengineering.es/#business" },
-            "speakable": {
-              "@type": "SpeakableSpecification",
-              "cssSelector": ["h1", "h2", ".speakable"]
-            }
-          },
-          {
-            "@type": "FAQPage",
-            "@id": "https://sintracengineering.es/#faq",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "¿Dónde opera Sintrac Engineering?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Sintrac Engineering opera principalmente en San Sebastián de los Reyes y el norte de la Comunidad de Madrid, incluyendo Alcobendas, Tres Cantos y el Corredor del Henares."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "¿Cuántos años de experiencia tiene Sintrac Engineering?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Sintrac Engineering fue fundada en 2003 y cuenta con más de 19 años de experiencia en construcción e inmobiliaria."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "¿Qué servicios ofrece Sintrac Engineering?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Sintrac Engineering ofrece obra nueva residencial, promociones inmobiliarias, construcción industrial y gestión integral de proyectos en Madrid."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "¿Cómo contactar con Sintrac Engineering?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Puedes contactar con Sintrac Engineering a través de su web oficial: https://sintracengineering.es"
-                }
-              }
-            ]
-          }
-        ]
-      }
-    </script>
+    <!-- Schema JSON-LD (generado desde src/data/company.ts) -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
     <Background />
     <Header />
-    <slot />
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
     <Footer />
   </body>
 

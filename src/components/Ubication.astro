@@ -1,40 +1,15 @@
 ---
-import SectionContaner from "./SectionContaner.astro";
+import SectionContainer from "./SectionContainer.astro";
+import { company, formattedAddress } from "../data/company";
 
-const schemaData = {
-  "@context": "https://schema.org",
-  "@type": "GeneralContractor",
-  name: "Sintrac Engineering",
-  description: "Constructora inmobiliaria con más de 19 años de experiencia en el norte de Madrid.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Av. de la Zaporra, 147",
-    addressLocality: "Alcobendas",
-    postalCode: "28100",
-    addressRegion: "Madrid",
-    addressCountry: "ES",
-  },
-  telephone: "+34000000000",
-  email: "info@sintracengineering.es",
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:00",
-      closes: "18:00",
-    },
-  ],
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 40.5341,
-    longitude: -3.6395,
-  },
-};
+// El JSON-LD de esta sección se ha eliminado: declaraba una segunda entidad de
+// negocio (con otra dirección) que competía con la de `Layout.astro`. Ahora
+// existe un único `@graph` en el layout, generado desde `company.ts`.
+
+const mapsQuery = encodeURIComponent(formattedAddress);
 ---
 
-<SectionContaner id="contacto" class="py-24">
-  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
-
+<SectionContainer id="contacto" class="py-24">
   <!-- Encabezado -->
   <div class="flex flex-col items-center gap-3 text-center mb-16">
     <span class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-text-muted)">Dónde estamos</span>
@@ -49,38 +24,43 @@ const schemaData = {
       <div class="flex flex-col gap-1.5">
         <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Dirección</p>
         <p class="text-base text-(--color-text-secondary) leading-relaxed">
-          Av. de la Zaporra, 147<br />28100 Alcobendas, Madrid
+          {company.address.street}<br />{company.address.postalCode}
+          {company.address.locality}, {company.address.region}
         </p>
       </div>
 
       <div class="flex flex-col gap-1.5">
         <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Horario de oficina</p>
-        <p class="text-base text-(--color-text-secondary)">Lunes – Viernes</p>
-        <p class="text-sm text-(--color-text-muted)">9:00 – 18:00</p>
+        <p class="text-base text-(--color-text-secondary)">
+          {company.openingHours.daysLabel}
+        </p>
+        <p class="text-sm text-(--color-text-muted)">
+          {company.openingHours.opens} – {company.openingHours.closes}
+        </p>
       </div>
 
       <div class="flex flex-col gap-1.5">
         <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Teléfono</p>
         <a
-          href="tel:+34000000000"
+          href={`tel:${company.phone.e164}`}
           class="text-base text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
         >
-          +34 000 000 000
+          {company.phone.display}
         </a>
       </div>
 
       <div class="flex flex-col gap-1.5">
         <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Email</p>
         <a
-          href="mailto:info@sintracengineering.es"
+          href={`mailto:${company.email}`}
           class="text-base text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150 break-all"
         >
-          info@sintracengineering.es
+          {company.email}
         </a>
       </div>
 
       <a
-        href="https://maps.google.com/?q=Av.+de+la+Zaporra,+147,+28100+Alcobendas,+Madrid"
+        href={`https://maps.google.com/?q=${mapsQuery}`}
         target="_blank"
         rel="noopener noreferrer"
         class="mt-auto text-sm font-medium px-5 py-2.5 rounded-full border-2 border-(--color-accent) text-(--color-accent-dark) no-underline hover:bg-(--color-accent) hover:text-white transition-[background,color] duration-150 w-fit"
@@ -93,17 +73,17 @@ const schemaData = {
     <!-- Mapa -->
     <div class="flex-1 rounded-2xl overflow-hidden border border-(--color-border) min-h-80">
       <iframe
-        title="Ubicación Sintrac Engineering — Av. de la Zaporra, 147, Alcobendas, Madrid"
+        title={`Ubicación ${company.name} — ${formattedAddress}`}
         width="100%"
         height="100%"
         style="border:0; min-height: 320px;"
         loading="lazy"
         allowfullscreen
         referrerpolicy="no-referrer-when-downgrade"
-        src="https://maps.google.com/maps?q=Av.+de+la+Zaporra,+147,+28100+Alcobendas,+Madrid&output=embed&hl=es"
+        src={`https://maps.google.com/maps?q=${mapsQuery}&output=embed&hl=es`}
       >
       </iframe>
     </div>
 
   </div>
-</SectionContaner>
+</SectionContainer>

@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:sintracengineering.es)"
+      "WebFetch(domain:sintracengineering.es)",
+      "Bash(git mv *)",
+      "Bash(python3 -c \"import sys,json,html,re; s=sys.stdin.read\\(\\); m=re.search\\(r'>\\(.*\\)</script>',s,re.S\\); print\\(json.dumps\\(json.loads\\(html.unescape\\(m.group\\(1\\)\\)\\),indent=2,ensure_ascii=False\\)[:1400]\\)\")",
+      "Bash(grep -o '.\\\\{0,120\\\\}role=\"dialog\".\\\\{0,60\\\\}' dist/index.html)",
+      "Bash(~/.cache/puppeteer/chrome/linux-146.0.7680.31/chrome-linux64/chrome --headless --disable-gpu --no-sandbox --hide-scrollbars --virtual-time-budget=5000 --window-size=390,3600 --screenshot=before-390.png http://localhost:4321/)"
     ]
   }
 }

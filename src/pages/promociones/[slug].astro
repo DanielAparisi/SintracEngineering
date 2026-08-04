@@ -1,0 +1,192 @@
+---
+/**
+ * Ficha de una promoción — ruta dinámica.
+ *
+ * `[slug]` se resuelve en tiempo de build con `getStaticPaths()`: Astro genera
+ * un HTML estático por cada promoción de `src/data/promociones.ts`, así que
+ * añadir una promoción al array crea su página sola, sin tocar este fichero.
+ *
+ * La promoción se pasa entera por `props` en lugar de buscarla aquí por el
+ * `slug` de `Astro.params`: así no hay que contemplar el caso "no existe".
+ */
+import Layout from "../../layouts/Layout.astro";
+import SectionContainer from "../../components/SectionContainer.astro";
+import Gallery from "../../components/Gallery.astro";
+import {
+  promociones,
+  portada,
+  fotoSrc,
+  fotoSrcset,
+  type Promocion,
+} from "../../data/promociones";
+import { company } from "../../data/company";
+
+export function getStaticPaths() {
+  return promociones.map((promocion) => ({
+    params: { slug: promocion.slug },
+    props: { promocion },
+  }));
+}
+
+interface Props {
+  promocion: Promocion;
+}
+
+const { promocion } = Astro.props;
+const entregada = promocion.estado === "entregado";
+
+/** La portada abre la ficha; el resto de fotos van a la galería de abajo. */
+const cubierta = portada(promocion);
+const resto = promocion.galeria.slice(1);
+
+/** Los datos que no constan (p. ej. viviendas de las obras antiguas) se omiten. */
+const ficha = [
+  { etiqueta: "Viviendas", valor: promocion.viviendas },
+  {
+    etiqueta: entregada ? "Año de entrega" : "Entrega prevista",
+    valor: promocion.year,
+  },
+  { etiqueta: "Periodo de obra", valor: promocion.periodo },
+  { etiqueta: "Estado", valor: entregada ? "Entregada" : "En obras" },
+  {
+    etiqueta: "Disponibilidad",
+    valor: entregada ? "100% vendida" : "Consultar",
+  },
+].filter((d): d is { etiqueta: string; valor: string } => Boolean(d.valor));
+
+const mapsQuery = encodeURIComponent(promocion.ubicacion);
+---
+
+<Layout
+  title={`${promocion.nombre} | ${company.name}`}
+  description={promocion.descripcion.slice(0, 155)}
+  keywords={`${promocion.nombre}, obra nueva ${promocion.ubicacion}, promoción inmobiliaria, ${company.name}`}
+  image={fotoSrc(cubierta)}
+>
+  <SectionContainer class="pt-12 pb-24 md:pt-16">
+    <!-- Migas -->
+    <nav aria-label="Migas de pan" class="mb-10">
+      <a
+        href="/#proyectos"
+        class="text-sm text-(--color-text-muted) no-underline hover:text-(--color-accent) transition-colors duration-150"
+      >
+        ← Volver a promociones
+      </a>
+    </nav>
+
+    <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+      <!-- Contenido -->
+      <div class="flex flex-col gap-8 flex-1 order-2 lg:order-1">
+        <div class="flex flex-col gap-5">
+          {
+            entregada ? (
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-semibold tracking-[0.12em] uppercase text-(--color-accent-dark)">
+                  Entregado
+                </span>
+                <span class="text-xs font-bold text-white bg-(--color-accent) px-2.5 py-1 rounded-full">
+                  {promocion.year}
+                </span>
+              </div>
+            ) : (
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span class="text-xs font-semibold tracking-[0.12em] uppercase text-green-600">
+                  En obras
+                </span>
+              </div>
+            )
+          }
+
+          <h1
+            class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight tracking-[-0.03em] text-(--color-text)"
+          >
+            {promocion.nombre}
+          </h1>
+
+          <p class="text-sm text-(--color-text-muted)">{promocion.ubicacion}</p>
+        </div>
+
+        <p
+          class="text-base md:text-lg text-(--color-text-secondary) leading-relaxed max-w-2xl"
+        >
+          {promocion.descripcion}
+        </p>
+
+        <!-- Ficha técnica -->
+        <dl
+          class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8 py-8 border-y border-(--color-border)"
+        >
+          {
+            ficha.map((dato) => (
+              <div>
+                <dt class="text-xs text-(--color-text-muted) uppercase tracking-wide">
+                  {dato.etiqueta}
+                </dt>
+                <dd class="text-2xl font-bold text-(--color-accent) mt-1">
+                  {dato.valor}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="/#contacto"
+            class="px-6 py-3 rounded-full bg-(--color-cta-bg) text-(--color-cta-text) font-medium text-sm no-underline transition-[opacity,transform] duration-150 hover:opacity-75 hover:-translate-y-px"
+          >
+            Solicitar información
+          </a>
+          <a
+            href={`https://maps.google.com/?q=${mapsQuery}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 rounded-full border-2 border-(--color-accent) text-(--color-accent-dark) font-medium text-sm no-underline transition-[background,transform,color] duration-150 hover:bg-(--color-accent) hover:text-white hover:-translate-y-px"
+          >
+            Ver ubicación →
+          </a>
+        </div>
+      </div>
+
+      <!-- Imagen: primero en móvil, columna derecha en escritorio -->
+      <div
+        class="relative w-full lg:w-[46%] shrink-0 aspect-4/3 sm:aspect-16/10 rounded-2xl overflow-hidden bg-(--color-bg-secondary) order-1 lg:order-2 lg:sticky lg:top-20"
+      >
+        <div
+          class="absolute inset-0 flex items-center justify-center text-(--color-text-muted) opacity-20 select-none"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            ><rect width="18" height="18" x="3" y="3" rx="2"></rect><path
+              d="m21 15-5-5L5 21"></path><circle cx="9" cy="9" r="2"
+            ></circle></svg
+          >
+        </div>
+        <img
+          src={fotoSrc(cubierta)}
+          srcset={fotoSrcset(cubierta)}
+          sizes="(min-width: 1024px) 46vw, 92vw"
+          width={cubierta.width}
+          height={cubierta.height}
+          alt={cubierta.alt}
+          class="relative w-full h-full object-cover"
+          decoding="async"
+          fetchpriority="high"
+          onerror="this.style.display='none'"
+        />
+      </div>
+    </div>
+
+    <div class="mt-20 md:mt-28">
+      <Gallery fotos={resto} titulo="Cómo es la promoción" />
+    </div>
+  </SectionContainer>
+</Layout>

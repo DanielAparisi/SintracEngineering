@@ -15,7 +15,10 @@
 
     --color-accent:       #1E3A5F;
     --color-accent-dark:  #0F2340;
-    --color-accent-light: #3B82F6;
+    /* Tinte claro del acento, pensado como fondo: el texto en --color-accent
+       encima cumple AA (9.8:1). El antiguo #3B82F6 era un azul más saturado
+       que solo daba 3.1:1. */
+    --color-accent-light: #E7EDF5;
 
     --color-cta-bg:   #1E3A5F;
     --color-cta-text: #FFFFFF;
@@ -36,5 +39,41 @@
     @apply flex flex-col min-h-screen;
     background-color: var(--color-bg);
     color: var(--color-text);
+  }
+
+  /* Foco visible solo para navegación por teclado: no aparece al hacer clic
+     con el ratón, pero sí al tabular. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* El navegador ya no pinta el foco por defecto cuando :focus-visible aplica,
+     así que anulamos el outline heredado del reset solo en ese caso. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@layer components {
+  /* Enlace de salto: oculto hasta que recibe el foco por teclado. Se usa
+     "clip" en vez de display:none para que siga siendo enfocable. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 200;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 0 0 0.5rem 0;
+  }
+
+  .skip-link:focus {
+    left: 0;
   }
 }
