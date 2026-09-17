@@ -1,0 +1,27 @@
+---
+/**
+ * Encabezado centrado de sección: antetítulo en versalitas + título grande.
+ *
+ * Los tamaños iban con el mismo `clamp()` copiado en tres secciones; cambiar la
+ * escala tipográfica obligaba a un find-replace.
+ */
+interface Props {
+  /** Antetítulo corto: "Trayectoria", "Actualidad", "Dónde estamos". */
+  kicker: string;
+  titulo: string;
+}
+
+const { kicker, titulo } = Astro.props;
+---
+
+<div class="flex flex-col items-center gap-3 text-center">
+  <span
+    class="text-xs font-semibold tracking-[0.15em] uppercase text-ink-muted"
+    >{kicker}</span
+  >
+  <h2
+    class="text-[clamp(2.5rem,6vw,5rem)] font-bold leading-none tracking-[-0.03em] text-ink"
+  >
+    {titulo}
+  </h2>
+</div>

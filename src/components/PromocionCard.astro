@@ -1,0 +1,93 @@
+---
+/**
+ * Fila de una promoción en el listado de la home: texto a la izquierda, foto a
+ * la derecha.
+ *
+ * Antes este bloque estaba escrito dos veces en `ProyectosSection.astro`, una
+ * por estado, con ~50 líneas idénticas salvo el distintivo y las métricas. Lo
+ * único que cambia de verdad entre estados son esas dos cosas, así que ambas
+ * salen de datos y el marcado es uno solo.
+ */
+import RemoteImage from "./ui/RemoteImage.astro";
+import ImagePlaceholder from "./ui/ImagePlaceholder.astro";
+import EstadoBadge from "./ui/EstadoBadge.astro";
+import { portada, promocionPath, type Promocion } from "../data/promociones";
+
+interface Props {
+  promocion: Promocion;
+  /** La última de la lista cierra con un borde inferior; el resto solo llevan el superior. */
+  ultima?: boolean;
+}
+
+const { promocion, ultima = false } = Astro.props;
+
+/**
+ * Cifras destacadas. Una promoción entregada presume de venta cerrada; una en
+ * obras, de cuándo entrega. Se descartan las que no constan en vez de pintar
+ * un hueco vacío.
+ */
+const metricas = (
+  promocion.estado === "entregado"
+    ? [
+        { valor: promocion.viviendas, etiqueta: "Viviendas" },
+        { valor: promocion.periodo, etiqueta: "Obra" },
+        { valor: "100%", etiqueta: "Vendidas" },
+      ]
+    : [
+        { valor: promocion.viviendas, etiqueta: "Viviendas" },
+        { valor: promocion.year, etiqueta: "Entrega prevista" },
+      ]
+).filter((m): m is { valor: string; etiqueta: string } => Boolean(m.valor));
+---
+
+<div
+  class:list={[
+    "flex flex-col md:flex-row items-stretch border-t border-border py-10 md:py-16",
+    ultima && "border-b",
+  ]}
+>
+  <div class="flex flex-col justify-between gap-8 flex-1 pr-0 md:pr-16">
+    <div class="flex flex-col gap-5">
+      <EstadoBadge estado={promocion.estado} year={promocion.year} />
+
+      <h3
+        class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-tight tracking-[-0.02em]"
+      >
+        <a
+          href={promocionPath(promocion)}
+          class="text-ink no-underline transition-colors duration-150 hover:text-accent focus-visible:text-accent"
+        >
+          {promocion.nombre}
+        </a>
+      </h3>
+
+      <p class="text-sm text-ink-muted">{promocion.ubicacion}</p>
+      <p class="text-base text-ink-secondary leading-relaxed max-w-md">
+        {promocion.descripcion}
+      </p>
+    </div>
+
+    <div class="flex gap-8">
+      {
+        metricas.map((metrica) => (
+          <div>
+            <p class="text-2xl font-bold text-accent">{metrica.valor}</p>
+            <p class="text-xs text-ink-muted uppercase tracking-wide mt-0.5">
+              {metrica.etiqueta}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    class="relative w-full md:w-[52%] shrink-0 aspect-4/3 sm:aspect-16/10 md:aspect-auto md:min-h-72 rounded-2xl overflow-hidden bg-surface-muted mt-8 md:mt-0"
+  >
+    <ImagePlaceholder />
+    <RemoteImage
+      foto={portada(promocion)}
+      sizes="(min-width: 768px) 52vw, 92vw"
+    />
+  </div>
+</div>

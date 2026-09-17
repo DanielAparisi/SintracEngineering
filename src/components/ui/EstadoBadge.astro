@@ -1,0 +1,64 @@
+---
+/**
+ * Distintivo del estado de una promoción.
+ *
+ * El mapa `ESTADOS` es lo que hace que añadir un estado nuevo (p. ej.
+ * "en-comercializacion") sea añadir una entrada y no editar el marcado: el
+ * `satisfies Record<EstadoPromocion, …>` hace que el build falle si falta.
+ */
+import type { EstadoPromocion } from "../../data/promociones";
+
+interface Aspecto {
+  texto: string;
+  /** Color del texto del estado. */
+  clase: string;
+  /** Punto verde parpadeante: solo para lo que está vivo ahora mismo. */
+  punto: boolean;
+  /** Si se acompaña del año en una píldora (entregas ya cerradas). */
+  muestraYear: boolean;
+}
+
+const ESTADOS = {
+  entregado: {
+    texto: "Entregado",
+    clase: "text-accent-dark",
+    punto: false,
+    muestraYear: true,
+  },
+  "en-obras": {
+    texto: "En obras",
+    clase: "text-green-600",
+    punto: true,
+    muestraYear: false,
+  },
+} as const satisfies Record<EstadoPromocion, Aspecto>;
+
+interface Props {
+  estado: EstadoPromocion;
+  year: string;
+}
+
+const { estado, year } = Astro.props;
+const aspecto = ESTADOS[estado];
+---
+
+<div class="flex items-center gap-3">
+  {
+    aspecto.punto && (
+      <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse motion-reduce:animate-none" />
+    )
+  }
+  <span
+    class:list={[
+      "text-xs font-semibold tracking-[0.12em] uppercase",
+      aspecto.clase,
+    ]}>{aspecto.texto}</span
+  >
+  {
+    aspecto.muestraYear && (
+      <span class="text-xs font-bold text-white bg-accent px-2.5 py-1 rounded-full">
+        {year}
+      </span>
+    )
+  }
+</div>

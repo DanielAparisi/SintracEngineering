@@ -1,3 +1,7 @@
+---
+import { enlacesPrincipales, enlaceContacto } from "../data/navigation";
+---
+
 <header
   class="sticky top-0 z-[100] transition-[background,backdrop-filter,border-color] duration-300 border-b border-transparent"
   id="main-header"
@@ -24,28 +28,25 @@
       class="flex list-none m-0 p-0 gap-1 flex-1 justify-center max-md:hidden"
       role="list"
     >
-      <li>
-        <a
-          href="/#proyectos"
-          class="block px-3 py-[0.4rem] text-sm text-[var(--color-text-secondary)] no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/10 nav-link"
-          >Proyectos</a
-        >
-      </li>
-      <li>
-        <a
-          href="/#nosotros"
-          class="block px-3 py-[0.4rem] text-sm text-(--color-text-secondary) no-underline rounded-md transition-[color,background] duration-150 hover:text-[var(--color-text)] hover:bg-black/5"
-          >Nosotros</a
-        >
-      </li>
+      {
+        enlacesPrincipales.map((enlace) => (
+          <li>
+            <a
+              href={enlace.href}
+              class="block px-3 py-[0.4rem] text-sm text-ink-secondary no-underline rounded-md transition-[color,background] duration-150 hover:text-ink hover:bg-black/5"
+            >
+              {enlace.texto}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
     <a
-      href="/#contacto"
-      class="header-cta shrink-0 text-sm font-medium px-4 py-[0.4rem] rounded-full no-underline transition-transform duration-150 hover:-translate-y-px max-md:hidden"
-      style="background:#0f2850; color:white;"
+      href={enlaceContacto.href}
+      class="shrink-0 text-sm font-medium px-4 py-[0.4rem] rounded-full no-underline bg-cta text-cta-fg transition-transform duration-150 hover:-translate-y-px max-md:hidden"
     >
-      Contactar
+      {enlaceContacto.texto}
     </a>
 
     <button
@@ -54,15 +55,9 @@
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <span
-        class="block w-[22px] h-[2px] bg-[var(--color-text)] rounded-sm transition-[transform,opacity] duration-[250ms]"
-      ></span>
-      <span
-        class="block w-[22px] h-[2px] bg-[var(--color-text)] rounded-sm transition-[transform,opacity] duration-[250ms]"
-      ></span>
-      <span
-        class="block w-[22px] h-[2px] bg-[var(--color-text)] rounded-sm transition-[transform,opacity] duration-[250ms]"
-      ></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
     </button>
   </nav>
 
@@ -75,67 +70,50 @@
   -->
   <nav
     id="mobile-menu"
-    class="hidden flex-col px-6 pt-4 pb-6 border-t border-[var(--color-border)]"
+    class="hidden flex-col px-6 pt-4 pb-6 border-t border-border"
     aria-label="Menú de navegación móvil"
   >
     <ul class="list-none m-0 p-0 flex flex-col gap-1" role="list">
+      {
+        enlacesPrincipales.map((enlace) => (
+          <li>
+            <a
+              href={enlace.href}
+              class="block px-2 py-[0.65rem] text-base text-ink-secondary no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-ink"
+            >
+              {enlace.texto}
+            </a>
+          </li>
+        ))
+      }
       <li>
         <a
-          href="/#proyectos"
-          class="block px-2 py-[0.65rem] text-base text-(--color-text-secondary) no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-(--color-text)"
-          >Proyectos</a
+          href={enlaceContacto.href}
+          class="block mt-2 px-2 py-[0.65rem] text-base text-center font-medium no-underline rounded-lg bg-cta text-cta-fg"
         >
-      </li>
-      <li>
-        <a
-          href="/#nosotros"
-          class="block px-2 py-[0.65rem] text-base text-(--color-text-secondary) no-underline rounded-lg transition-[background,color] duration-150 hover:bg-black/5 hover:text-(--color-text)"
-          >Nosotros</a
-        >
-      </li>
-      <li>
-        <a
-          href="/#contacto"
-          class="block mt-2 px-2 py-[0.65rem] text-base text-center font-medium no-underline rounded-lg bg-(--color-cta-bg) text-(--color-cta-text)"
-          >Contactar</a
-        >
+          {enlaceContacto.texto}
+        </a>
       </li>
     </ul>
   </nav>
 </header>
 
 <script>
-  const header = document.getElementById("main-header") as HTMLElement;
+  /**
+   * Al bajar, la cabecera pasa de transparente a opaca. Solo alterna una clase:
+   * el aspecto vive en el CSS de abajo. Antes se escribían estilos en línea
+   * (`header.style.background = "rgba(...)"`), que ganan a cualquier regla CSS
+   * y metían una cuarta copia de la paleta fuera de los tokens.
+   */
+  const header = document.getElementById("main-header");
 
-  const navLinks = header.querySelectorAll<HTMLElement>(".nav-link");
-  const hamburgerBars = header.querySelectorAll<HTMLElement>(".hamburger span");
+  if (header) {
+    const sincronizar = () =>
+      header.classList.toggle("is-scrolled", window.scrollY > 10);
 
-  function onScroll() {
-    if (window.scrollY > 10) {
-      header.style.background = "rgba(255, 255, 255, 0.85)";
-      header.style.backdropFilter = "blur(16px)";
-      header.style.borderColor = "rgba(15, 40, 80, 0.12)";
-      navLinks.forEach((l) => {
-        l.style.color = "#334155";
-      });
-      hamburgerBars.forEach((b) => {
-        b.style.background = "";
-      });
-    } else {
-      header.style.background = "transparent";
-      header.style.backdropFilter = "none";
-      header.style.borderColor = "transparent";
-      navLinks.forEach((l) => {
-        l.style.color = "";
-      });
-      hamburgerBars.forEach((b) => {
-        b.style.background = "";
-      });
-    }
+    window.addEventListener("scroll", sincronizar, { passive: true });
+    sincronizar();
   }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
 </script>
 
 <script>
@@ -173,13 +151,36 @@
 </script>
 
 <style>
-  .hamburger.open span:nth-child(1) {
+  #main-header.is-scrolled {
+    background: rgb(255 255 255 / 0.85);
+    backdrop-filter: blur(16px);
+    border-color: var(--color-border);
+  }
+
+  .bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-ink);
+    transition:
+      transform 250ms,
+      opacity 250ms;
+  }
+
+  .hamburger.open .bar:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
-  .hamburger.open span:nth-child(2) {
+  .hamburger.open .bar:nth-child(2) {
     opacity: 0;
   }
-  .hamburger.open span:nth-child(3) {
+  .hamburger.open .bar:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar {
+      transition: none;
+    }
   }
 </style>

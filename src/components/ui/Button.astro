@@ -1,0 +1,42 @@
+---
+/**
+ * Enlace con aspecto de botón.
+ *
+ * Las dos variantes estaban escritas a mano en cinco sitios con cadenas de
+ * ~12 clases; el objetivo es que añadir un CTA no sea copiar y pegar la cadena.
+ */
+interface Props {
+  href: string;
+  /** `solido` para la acción principal, `contorno` para la secundaria. */
+  variante?: "solido" | "contorno";
+  /** Abre en pestaña nueva con el `rel` de seguridad correspondiente. */
+  externo?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variante = "solido",
+  externo = false,
+  class: className,
+} = Astro.props;
+
+const base =
+  "px-6 py-3 rounded-full font-medium text-sm no-underline duration-150 hover:-translate-y-px";
+
+const porVariante = {
+  solido:
+    "bg-cta text-cta-fg transition-[opacity,transform] hover:opacity-75",
+  contorno:
+    "border-2 border-accent text-accent-dark transition-[background,transform,color] hover:bg-accent hover:text-white",
+} as const satisfies Record<Props["variante"] & string, string>;
+---
+
+<a
+  href={href}
+  target={externo ? "_blank" : undefined}
+  rel={externo ? "noopener noreferrer" : undefined}
+  class:list={[base, porVariante[variante], className]}
+>
+  <slot />
+</a>

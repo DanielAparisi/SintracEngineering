@@ -1,5 +1,6 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
+import Button from "./ui/Button.astro";
 import { company } from "../data/company";
 
 /**
@@ -21,19 +22,19 @@ const cifras = [
     <!-- IZQUIERDA: Texto -->
     <div class="flex-1 flex flex-col gap-8">
       <span
-        class="text-xs font-semibold tracking-[0.15em] uppercase text-white border border-(--color-accent) rounded-full px-3 py-1 w-fit bg-(--color-accent)"
+        class="text-xs font-semibold tracking-[0.15em] uppercase text-white border border-accent rounded-full px-3 py-1 w-fit bg-accent"
       >
         Desde {company.foundingYear} · {company.areaServed.primary}
       </span>
 
       <h1
-        class="text-5xl md:text-6xl font-bold leading-[1.1] tracking-[-0.03em] text-(--color-text)"
+        class="text-5xl md:text-6xl font-bold leading-[1.1] tracking-[-0.03em] text-ink"
       >
         Construimos<br />el futuro<br />de Madrid
       </h1>
 
       <p
-        class="text-lg text-(--color-text-secondary) leading-relaxed max-w-md"
+        class="text-lg text-ink-secondary leading-relaxed max-w-md"
       >
         Más de {company.yearsOfExperience} años desarrollando obra nueva
         residencial y promociones inmobiliarias en el {
@@ -42,29 +43,19 @@ const cifras = [
       </p>
 
       <div class="flex gap-3 flex-wrap">
-        <a
-          href="/#proyectos"
-          class="px-6 py-3 rounded-full bg-(--color-cta-bg) text-(--color-cta-text) font-medium text-sm no-underline transition-[opacity,transform] duration-150 hover:opacity-75 hover:-translate-y-px"
-        >
-          Ver proyectos
-        </a>
-        <a
-          href="/#contacto"
-          class="px-6 py-3 rounded-full border-2 border-(--color-accent) text-(--color-accent-dark) font-medium text-sm no-underline transition-[background,transform,color] duration-150 hover:bg-(--color-accent) hover:text-white hover:-translate-y-px"
-        >
-          Contactar
-        </a>
+        <Button href="/#proyectos">Ver proyectos</Button>
+        <Button href="/#contacto" variante="contorno">Contactar</Button>
       </div>
 
       <!-- Stats -->
-      <div class="flex gap-12 pt-8 border-t-2 border-(--color-accent)">
+      <div class="flex gap-12 pt-8 border-t-2 border-accent">
         {
           cifras.map((cifra) => (
             <div>
-              <p class="text-3xl font-bold text-(--color-accent)">
+              <p class="text-3xl font-bold text-accent">
                 {cifra.valor}
               </p>
-              <p class="text-xs text-(--color-text-muted) mt-0.5">
+              <p class="text-xs text-ink-muted mt-0.5">
                 {cifra.etiqueta}
               </p>
             </div>
@@ -74,14 +65,14 @@ const cifras = [
     </div>
 
     <!-- DERECHA: Historia -->
-    <div class="flex-1 w-full flex flex-col gap-6 bg-(--color-bg-card) rounded-3xl p-8 border-l-4 border-(--color-accent)">
-      <span class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-accent)">
+    <div class="flex-1 w-full flex flex-col gap-6 bg-surface-card rounded-3xl p-8 border-l-4 border-accent">
+      <span class="text-xs font-semibold tracking-[0.15em] uppercase text-accent">
         Nuestra historia
       </span>
-      <h2 class="text-2xl font-bold text-(--color-text) leading-snug">
+      <h2 class="text-2xl font-bold text-ink leading-snug">
         Dos décadas construyendo confianza
       </h2>
-      <div class="flex flex-col gap-4 text-(--color-text-secondary) text-sm leading-relaxed">
+      <div class="flex flex-col gap-4 text-ink-secondary text-sm leading-relaxed">
         <p>
           Sintrac Engineering nació en 2003 en San Sebastián de los Reyes con una idea sencilla pero ambiciosa: construir viviendas en las que las familias pudieran confiar. Desde el primer día, apostamos por la calidad de los materiales, el rigor en la ejecución y una atención personalizada al cliente que nos diferenciaba de las grandes promotoras.
         </p>

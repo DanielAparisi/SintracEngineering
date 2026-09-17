@@ -1,5 +1,7 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
+import SectionHeading from "./ui/SectionHeading.astro";
+import Button from "./ui/Button.astro";
 import { company, formattedAddress } from "../data/company";
 
 // El JSON-LD de esta sección se ha eliminado: declaraba una segunda entidad de
@@ -10,10 +12,8 @@ const mapsQuery = encodeURIComponent(formattedAddress);
 ---
 
 <SectionContainer id="contacto" class="py-24">
-  <!-- Encabezado -->
-  <div class="flex flex-col items-center gap-3 text-center mb-16">
-    <span class="text-xs font-semibold tracking-[0.15em] uppercase text-(--color-text-muted)">Dónde estamos</span>
-    <h2 class="text-[clamp(2.5rem,6vw,5rem)] font-bold leading-none tracking-[-0.03em] text-(--color-text)">Ubicación</h2>
+  <div class="mb-16">
+    <SectionHeading kicker="Dónde estamos" titulo="Ubicación" />
   </div>
 
   <div class="flex flex-col md:flex-row gap-10 items-stretch">
@@ -22,56 +22,56 @@ const mapsQuery = encodeURIComponent(formattedAddress);
     <div class="flex flex-col gap-8 md:w-72 shrink-0">
 
       <div class="flex flex-col gap-1.5">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Dirección</p>
-        <p class="text-base text-(--color-text-secondary) leading-relaxed">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">Dirección</p>
+        <p class="text-base text-ink-secondary leading-relaxed">
           {company.address.street}<br />{company.address.postalCode}
           {company.address.locality}, {company.address.region}
         </p>
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Horario de oficina</p>
-        <p class="text-base text-(--color-text-secondary)">
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">Horario de oficina</p>
+        <p class="text-base text-ink-secondary">
           {company.openingHours.daysLabel}
         </p>
-        <p class="text-sm text-(--color-text-muted)">
+        <p class="text-sm text-ink-muted">
           {company.openingHours.opens} – {company.openingHours.closes}
         </p>
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Teléfono</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">Teléfono</p>
         <a
           href={`tel:${company.phone.e164}`}
-          class="text-base text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150"
+          class="text-base text-ink-secondary no-underline hover:text-ink transition-colors duration-150"
         >
           {company.phone.display}
         </a>
       </div>
 
       <div class="flex flex-col gap-1.5">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-text-muted)">Email</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">Email</p>
         <a
           href={`mailto:${company.email}`}
-          class="text-base text-(--color-text-secondary) no-underline hover:text-(--color-text) transition-colors duration-150 break-all"
+          class="text-base text-ink-secondary no-underline hover:text-ink transition-colors duration-150 break-all"
         >
           {company.email}
         </a>
       </div>
 
-      <a
+      <Button
         href={`https://maps.google.com/?q=${mapsQuery}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-auto text-sm font-medium px-5 py-2.5 rounded-full border-2 border-(--color-accent) text-(--color-accent-dark) no-underline hover:bg-(--color-accent) hover:text-white transition-[background,color] duration-150 w-fit"
+        variante="contorno"
+        externo
+        class="mt-auto w-fit"
       >
         Cómo llegar →
-      </a>
+      </Button>
 
     </div>
 
     <!-- Mapa -->
-    <div class="flex-1 rounded-2xl overflow-hidden border border-(--color-border) min-h-80">
+    <div class="flex-1 rounded-2xl overflow-hidden border border-border min-h-80">
       <iframe
         title={`Ubicación ${company.name} — ${formattedAddress}`}
         width="100%"

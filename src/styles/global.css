@@ -1,27 +1,42 @@
 @import "tailwindcss";
 
+/**
+ * Paleta del sitio.
+ *
+ * Va en `@theme` y no en `:root` para que Tailwind genere las utilidades
+ * (`text-ink`, `bg-surface-card`, `border-accent`) en vez de tener que escribir
+ * `text-(--color-text-muted)` a mano en cada clase. Las variables siguen
+ * emitiéndose en `:root`, así que `var(--color-accent)` sigue valiendo en CSS.
+ *
+ * Nombres: `surface` = fondos, `ink` = texto, `accent` = marca, `cta` = botón
+ * principal. Evitan los pares confusos `bg-bg` / `text-text` que saldrían de
+ * llamarlos `--color-bg` y `--color-text`.
+ */
+@theme {
+  --color-surface:       #FFFFFF;
+  --color-surface-card:  #F1F5F9;
+  --color-surface-muted: #E2E8F0;
+
+  --color-border: rgba(15, 40, 80, 0.12);
+
+  --color-ink:           #0F172A;
+  --color-ink-secondary: #334155;
+  --color-ink-muted:     #64748B;
+
+  --color-accent:      #1E3A5F;
+  --color-accent-dark: #0F2340;
+  /* Tinte claro del acento, pensado como fondo: el texto en --color-accent
+     encima cumple AA (9.8:1). El antiguo #3B82F6 era un azul más saturado
+     que solo daba 3.1:1. */
+  --color-accent-light: #E7EDF5;
+
+  --color-cta:    #1E3A5F;
+  --color-cta-fg: #FFFFFF;
+}
+
 @layer base {
   :root {
     color-scheme: light;
-
-    --color-bg:           #FFFFFF;
-    --color-bg-card:      #F1F5F9;
-    --color-bg-secondary: #E2E8F0;
-    --color-border:       rgba(15, 40, 80, 0.12);
-
-    --color-text:           #0F172A;
-    --color-text-secondary: #334155;
-    --color-text-muted:     #64748B;
-
-    --color-accent:       #1E3A5F;
-    --color-accent-dark:  #0F2340;
-    /* Tinte claro del acento, pensado como fondo: el texto en --color-accent
-       encima cumple AA (9.8:1). El antiguo #3B82F6 era un azul más saturado
-       que solo daba 3.1:1. */
-    --color-accent-light: #E7EDF5;
-
-    --color-cta-bg:   #1E3A5F;
-    --color-cta-text: #FFFFFF;
   }
 
   html {
@@ -36,9 +51,7 @@
   }
 
   body {
-    @apply flex flex-col min-h-screen;
-    background-color: var(--color-bg);
-    color: var(--color-text);
+    @apply flex flex-col min-h-screen bg-surface text-ink;
   }
 
   /* Foco visible solo para navegación por teclado: no aparece al hacer clic
