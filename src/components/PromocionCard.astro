@@ -8,7 +8,7 @@
  * único que cambia de verdad entre estados son esas dos cosas, así que ambas
  * salen de datos y el marcado es uno solo.
  */
-import RemoteImage from "./ui/RemoteImage.astro";
+import Photo from "./ui/Photo.astro";
 import ImagePlaceholder from "./ui/ImagePlaceholder.astro";
 import EstadoBadge from "./ui/EstadoBadge.astro";
 import { portada, promocionPath, type Promocion } from "../data/promociones";
@@ -85,7 +85,7 @@ const metricas = (
     class="relative w-full md:w-[52%] shrink-0 aspect-4/3 sm:aspect-16/10 md:aspect-auto md:min-h-72 rounded-2xl overflow-hidden bg-surface-muted mt-8 md:mt-0"
   >
     <ImagePlaceholder />
-    <RemoteImage
+    <Photo
       foto={portada(promocion)}
       sizes="(min-width: 768px) 52vw, 92vw"
     />

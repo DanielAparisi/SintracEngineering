@@ -116,25 +116,24 @@ huérfanos — como ya pasó con el `#0f2850`.
 
 ---
 
-### 5. Imágenes remotas sin optimizar y sin dimensiones → CLS y dependencia del WordPress viejo
+### 5. ~~Imágenes remotas sin optimizar y sin dimensiones~~ → RESUELTO
 
-**Problema.** Todas las fotos apuntan al WordPress anterior:
-`https://sintracengineering.es/wp-content/uploads/2022/03/IMG_6220.jpg` (`MainBanner.astro:38,66,94,122,150`,
-`ProyectosSection.astro:6,17`). Son `<img>` crudos: sin `width`/`height`, sin `loading="lazy"`, sin `decoding`,
-sin WebP/AVIF, sin `srcset`. Encima llevan `onerror="this.style.display='none'"` inline — un handler que
-además **rompería cualquier CSP** que se añada más adelante.
+**Problema (era).** Todas las fotos apuntaban al WordPress anterior, alojado en el mismo dominio al que se
+despliega este sitio: al mover el DNS a Netlify, `/wp-content/uploads/…` pasaba a ser un 404 y la web se
+quedaba sin una sola foto. Además el collage de `MainBanner` servía los JPEG originales sin `srcset`.
 
-**Por qué escala mal.** El día que se apague ese WordPress, la web se queda sin fotos. Y con 15 promociones se
-descargan 15 JPEG originales de cámara sin redimensionar: la landing pasa de rápida a inutilizable en móvil.
+**Qué se hizo.**
+- Los 18 originales viven ahora en `src/assets/promociones/<slug>/` y `src/assets/nosotros/` (4,4 MB en repo).
+- `RemoteImage.astro` → `ui/Photo.astro`, que envuelve `<Picture>` de `astro:assets`: AVIF + WebP, anchos
+  recortados al original para no ampliar, `width`/`height` del propio fichero → sin CLS.
+- `Foto` ya no guarda URLs ni tabla de anchos, solo `alt` + el `ImageMetadata` importado. Una foto que falte
+  rompe el build, no la web.
+- `og:image` de cada ficha se genera con `getImage()` a 1200×630 en JPEG (los bots no leen AVIF).
+- El `onerror`/script de desvanecido desaparece: ya no hay imágenes que puedan faltar en runtime. El sitio
+  vuelve a emitir cero JavaScript.
 
-**Propuesta.**
-- Descargar los originales a `src/assets/promociones/` y usar `<Image />` / `<Picture />` de `astro:assets`
-  (optimización, AVIF/WebP, `width`/`height` automáticos → CLS 0).
-- Si se prefiere mantenerlas remotas: declarar `image.domains` en la config para que Astro las procese igual.
-- Sustituir el `onerror` inline por el placeholder como fondo CSS del contenedor (ya existe el `<div>` detrás,
-  solo hay que dejar de tapar el hueco con JS).
-
-**Impacto:** alto · **Esfuerzo:** 2-3 h
+**Resultado medido.** Home: 1,08 MB → 146 KB en escritorio, 1,00 MB → 96 KB en móvil. Ficha de promoción:
+499 KB → 119 KB en escritorio, 95 KB en móvil.
 
 ---
 

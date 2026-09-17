@@ -1,0 +1,59 @@
+---
+/**
+ * Foto del sitio, optimizada en tiempo de build.
+ *
+ * Concentra el contrato de una imagen —qué anchos generar, en qué formatos y
+ * con qué prioridad— que antes estaba copiado en cuatro plantillas y se
+ * desincronizaba: una llevaba `loading="lazy"` y otra no, una traía `sizes` y
+ * otra tampoco.
+ *
+ * Sustituye a `RemoteImage.astro`, que enlazaba a la biblioteca de WordPress:
+ * ahora las fotos se importan de `src/assets/` y es Astro quien emite las
+ * variantes en AVIF y WebP (ver `Foto` en `src/data/promociones.ts`).
+ *
+ * Va siempre dentro de un contenedor `relative` junto a `<ImagePlaceholder />`,
+ * que se ve mientras la foto carga; de ahí el `absolute inset-0` del
+ * `<picture>`, sin el cual el `h-full` de la `<img>` se resolvería contra un
+ * envoltorio de altura automática y colapsaría el hueco.
+ */
+import { Picture } from "astro:assets";
+import type { Foto } from "../../data/promociones";
+
+interface Props {
+  foto: Foto;
+  /** Ancho real del hueco por breakpoint, para que el navegador elija variante. */
+  sizes: string;
+  /**
+   * Foto visible sin hacer scroll (la portada de una ficha). Se descarga con
+   * prioridad en vez de en diferido; para el resto, `lazy` es lo correcto.
+   */
+  priority?: boolean;
+  class?: string;
+}
+
+const { foto, sizes, priority = false, class: className } = Astro.props;
+
+/**
+ * Anchos a generar, recortados al original: pedir 1536 px de una foto de 1080
+ * haría que sharp la ampliara, gastando bytes en píxeles inventados. El
+ * original entra siempre como variante mayor para las pantallas grandes.
+ */
+const ANCHOS_BASE = [480, 768, 1024, 1536];
+const widths = [
+  ...ANCHOS_BASE.filter((ancho) => ancho < foto.src.width),
+  foto.src.width,
+];
+---
+
+<Picture
+  src={foto.src}
+  alt={foto.alt}
+  widths={widths}
+  sizes={sizes}
+  formats={["avif", "webp"]}
+  loading={priority ? "eager" : "lazy"}
+  decoding="async"
+  fetchpriority={priority ? "high" : undefined}
+  pictureAttributes={{ class: "absolute inset-0 block" }}
+  class:list={["w-full h-full object-cover", className]}
+/>

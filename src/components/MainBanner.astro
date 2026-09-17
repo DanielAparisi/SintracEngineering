@@ -12,31 +12,65 @@
  * Desktop (4 col x 2 filas): el collage original.
  */
 import ImagePlaceholder from "./ui/ImagePlaceholder.astro";
+import Photo from "./ui/Photo.astro";
 import { company } from "../data/company";
+import { portada, finalizados } from "../data/promociones";
+
+import obra1 from "../assets/nosotros/obra-1.jpg";
+import obra2 from "../assets/nosotros/obra-2.jpg";
+import obra3 from "../assets/nosotros/obra-3.jpg";
+import obra4 from "../assets/nosotros/obra-4.jpg";
+
+/**
+ * Cada hueco declara su propio `sizes` porque el collage no es uniforme: las
+ * celdas anchas ocupan el doble que las normales, y darles a todas el mismo
+ * valor haría que unas se bajaran una variante corta y otras una de sobra.
+ */
+const CELDA = "(min-width: 768px) 25vw, 46vw";
+const CELDA_ANCHA = "(min-width: 768px) 50vw, 92vw";
 
 const fotos = [
   {
-    src: "https://sintracengineering.es/wp-content/uploads/2022/03/IMG_6220.jpg",
+    foto: {
+      src: obra1,
+      alt: "Edificio de viviendas entregado, visto desde la calle peatonal",
+    },
+    sizes: CELDA,
     // Vertical: ocupa las dos filas de la izquierda en ambos breakpoints.
     position:
       "col-start-1 row-start-1 row-span-2 md:col-start-1 md:row-start-1 md:row-span-2",
   },
   {
-    src: "https://sintracengineering.es/wp-content/uploads/2022/03/2.jpg",
+    foto: {
+      src: obra2,
+      alt: "Fachada ventilada y acceso al garaje de un edificio de viviendas",
+    },
+    sizes: CELDA_ANCHA,
     // Ancha: a todo el ancho en móvil, centro-arriba en desktop.
     position:
       "col-start-1 col-span-2 row-start-3 md:col-start-2 md:col-span-2 md:row-start-1 md:row-span-1",
   },
   {
-    src: "https://sintracengineering.es/wp-content/uploads/2022/03/IMG_6171.jpg",
+    foto: {
+      src: obra3,
+      alt: "Detalle de la fachada con el rótulo de Sintrac Engineering junto al portal",
+    },
+    sizes: CELDA,
     position: "col-start-2 row-start-1 md:col-start-4 md:row-start-1",
   },
   {
-    src: "https://sintracengineering.es/wp-content/uploads/2022/03/3movil2-1.jpg",
+    foto: {
+      src: obra4,
+      alt: "Esquina del edificio con la caja de escalera acristalada",
+    },
+    sizes: CELDA,
     position: "col-start-2 row-start-2 md:col-start-2 md:row-start-2",
   },
   {
-    src: "https://sintracengineering.es/wp-content/uploads/2022/06/5-7.jpg",
+    // La portada de la última promoción entregada, en vez de una copia suya:
+    // así el collage se actualiza solo cuando cambie la primera foto de la ficha.
+    foto: portada(finalizados[0]),
+    sizes: CELDA_ANCHA,
     // Ancha con las cifras encima: dos filas en móvil para que el overlay respire.
     position:
       "col-start-1 col-span-2 row-start-4 row-span-2 md:col-start-3 md:col-span-2 md:row-start-2 md:row-span-1",
@@ -85,20 +119,13 @@ const cifras = [
       class="grid grid-cols-2 gap-2.5 sm:gap-3 auto-rows-[7.5rem] sm:auto-rows-[10rem] md:grid-cols-4 md:grid-rows-2 md:auto-rows-auto md:h-150"
     >
       {
-        fotos.map((foto) => (
+        fotos.map((celda) => (
           <div
-            class={`${foto.position} rounded-2xl overflow-hidden bg-surface-muted relative`}
+            class={`${celda.position} rounded-2xl overflow-hidden bg-surface-muted relative`}
           >
             <ImagePlaceholder size={36} />
-            <img
-              src={foto.src}
-              alt="Proyecto Sintrac Engineering"
-              class="relative w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
-              data-remote-image
-            />
-            {foto.overlay && (
+            <Photo foto={celda.foto} sizes={celda.sizes} />
+            {celda.overlay && (
               <div class="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent grid grid-cols-3 items-end gap-x-3 p-4 sm:flex sm:gap-x-8 sm:p-6">
                 {cifras.map((cifra) => (
                   <div>

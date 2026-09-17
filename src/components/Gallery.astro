@@ -4,11 +4,11 @@
  *
  * Cada tarjeta enlaza a la variante grande de la foto: así se puede ver a
  * tamaño completo sin un lightbox con JavaScript (el sitio no carga JS de
- * framework y no compensa romper eso por esto). El `srcset` deja que el móvil
- * se descargue la variante de 768 px en lugar del original de 2560 px.
+ * framework y no compensa romper eso por esto). El `srcset` que genera
+ * `<Photo />` deja que el móvil se baje la variante de 768 px, no el original.
  */
-import RemoteImage from "./ui/RemoteImage.astro";
-import { fotoSrcset, type Foto } from "../data/promociones";
+import Photo from "./ui/Photo.astro";
+import type { Foto } from "../data/promociones";
 
 interface Props {
   fotos: Foto[];
@@ -20,8 +20,8 @@ const { fotos, titulo = "Galería" } = Astro.props;
 /** Ancho real del hueco: 1 columna en móvil, 2 en tablet, 3 en escritorio. */
 const sizes = "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw";
 
-/** La variante mayor, para el enlace de "ver a tamaño completo". */
-const original = (f: Foto) => fotoSrcset(f).split(", ").at(-1)!.split(" ")[0];
+/** El original tal cual lo emite Astro, para "ver a tamaño completo". */
+const original = (f: Foto) => f.src.src;
 ---
 
 {
@@ -44,7 +44,7 @@ const original = (f: Foto) => fotoSrcset(f).split(", ").at(-1)!.split(" ")[0];
               class="group block relative aspect-4/3 rounded-2xl overflow-hidden bg-surface-muted no-underline"
               aria-label={`Ver a tamaño completo: ${foto.alt}`}
             >
-              <RemoteImage
+              <Photo
                 foto={foto}
                 sizes={sizes}
                 class="transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"

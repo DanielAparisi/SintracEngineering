@@ -9,42 +9,41 @@
  * que sustituirá a este fichero. La forma del dato ya se parece a la final
  * para que esa migración sea directa.
  */
+import type { ImageMetadata } from "astro";
 
-/** Raíz de la biblioteca de medios de WordPress, de donde salen las fotos. */
-const MEDIA = "https://sintracengineering.es/wp-content/uploads/";
+import laFachada from "../assets/promociones/los-altos-de-alcobendas-ii/fachada.jpg";
+import laPortal from "../assets/promociones/los-altos-de-alcobendas-ii/portal.jpg";
+import laSalon from "../assets/promociones/los-altos-de-alcobendas-ii/salon.jpg";
+import laDormitorioPrincipal from "../assets/promociones/los-altos-de-alcobendas-ii/dormitorio-principal.jpg";
+import laDormitorioInfantil from "../assets/promociones/los-altos-de-alcobendas-ii/dormitorio-infantil.jpg";
+import laBano from "../assets/promociones/los-altos-de-alcobendas-ii/bano.jpg";
+
+import pnConjunto from "../assets/promociones/el-pinar-de-prado-norte/conjunto.jpg";
+import pnAcceso from "../assets/promociones/el-pinar-de-prado-norte/acceso.jpg";
+import pnSalon from "../assets/promociones/el-pinar-de-prado-norte/salon.jpg";
+import pnCocina from "../assets/promociones/el-pinar-de-prado-norte/cocina.jpg";
+import pnDormitorioPrincipal from "../assets/promociones/el-pinar-de-prado-norte/dormitorio-principal.jpg";
+import pnDormitorioEscritorio from "../assets/promociones/el-pinar-de-prado-norte/dormitorio-escritorio.jpg";
+import pnBano from "../assets/promociones/el-pinar-de-prado-norte/bano.jpg";
+import pnVestidor from "../assets/promociones/el-pinar-de-prado-norte/vestidor.jpg";
 
 export interface Foto {
   alt: string;
   /**
-   * Dimensiones del original. Fijan la proporción del hueco antes de que la
-   * imagen cargue, que es lo que evita el salto de layout en móvil.
+   * Original importado de `src/assets/`, no una URL.
+   *
+   * Antes las fotos se enlazaban al WordPress anterior, que vive en el mismo
+   * dominio al que se despliega este sitio: al mover el DNS a Netlify,
+   * `/wp-content/uploads/…` pasaba a ser un 404 y desaparecían todas. Ahora son
+   * parte del repo, así que un fichero que falte rompe el build en lugar de la
+   * web en producción.
+   *
+   * Importarlas (en vez de dejarlas en `public/`) es lo que permite a Astro
+   * generar AVIF y WebP a cada ancho, y conocer las dimensiones del original
+   * para reservar el hueco y evitar el salto de layout.
    */
-  width: number;
-  height: number;
-  /**
-   * Variantes que ya genera WordPress, indexadas por ancho en píxeles. Se
-   * guardan las rutas relativas a `MEDIA` para no repetir el dominio 40 veces.
-   * De aquí sale el `srcset`: un móvil descarga la de 768 px en vez del
-   * original de 2560 px.
-   */
-  anchos: Record<number, string>;
+  src: ImageMetadata;
 }
-
-/** `srcset` completo de una foto, con todas sus variantes. */
-export const fotoSrcset = (f: Foto) =>
-  Object.entries(f.anchos)
-    .map(([ancho, ruta]) => `${MEDIA}${ruta} ${ancho}w`)
-    .join(", ");
-
-/**
- * `src` de reserva para navegadores sin `srcset`: la mayor variante que no
- * pase de 1024 px, para no colar un original de varios MB como fallback.
- */
-export const fotoSrc = (f: Foto) => {
-  const anchos = Object.keys(f.anchos).map(Number).sort((a, b) => a - b);
-  const elegido = anchos.filter((a) => a <= 1024).pop() ?? anchos[0];
-  return `${MEDIA}${f.anchos[elegido]}`;
-};
 
 export type EstadoPromocion = "entregado" | "en-obras";
 
@@ -68,7 +67,6 @@ export interface Promocion {
   galeria: Foto[];
 }
 
-
 export const promociones: Promocion[] = [
   {
     slug: "los-altos-de-alcobendas-ii",
@@ -82,68 +80,27 @@ export const promociones: Promocion[] = [
     galeria: [
       {
         alt: "Fachada del edificio de Los Altos de Alcobendas II al atardecer",
-        width: 1462,
-        height: 1044,
-        anchos: {
-          768: "2022/06/5-7-768x548.jpg",
-          1024: "2022/06/5-7-1024x731.jpg",
-          1462: "2022/06/5-7.jpg",
-        },
+        src: laFachada,
       },
       {
         alt: "Portal de acceso al edificio, con fachada de madera y piedra",
-        width: 2000,
-        height: 1125,
-        anchos: {
-          768: "2022/06/portal-768x432.jpg",
-          1024: "2022/06/portal-1024x576.jpg",
-          1536: "2022/06/portal-1536x864.jpg",
-          2000: "2022/06/portal.jpg",
-        },
+        src: laPortal,
       },
       {
         alt: "Salón-comedor con cocina abierta y salida a la terraza",
-        width: 2560,
-        height: 1440,
-        anchos: {
-          768: "2022/06/Salon-768x432.jpg",
-          1024: "2022/06/Salon-1024x576.jpg",
-          1536: "2022/06/Salon-1536x864.jpg",
-          2560: "2022/06/Salon-scaled.jpg",
-        },
+        src: laSalon,
       },
       {
         alt: "Dormitorio principal con armario empotrado",
-        width: 2560,
-        height: 1440,
-        anchos: {
-          768: "2022/06/Habitacion-pincipal-768x432.jpg",
-          1024: "2022/06/Habitacion-pincipal-1024x576.jpg",
-          1536: "2022/06/Habitacion-pincipal-1536x864.jpg",
-          2560: "2022/06/Habitacion-pincipal-scaled.jpg",
-        },
+        src: laDormitorioPrincipal,
       },
       {
         alt: "Dormitorio infantil con zona de estudio y armario alto",
-        width: 2560,
-        height: 1829,
-        anchos: {
-          768: "2022/06/Habitacion-infantil-768x549.jpg",
-          1024: "2022/06/Habitacion-infantil-1024x732.jpg",
-          1536: "2022/06/Habitacion-infantil-1536x1097.jpg",
-          2560: "2022/06/Habitacion-infantil-scaled.jpg",
-        },
+        src: laDormitorioInfantil,
       },
       {
         alt: "Baño completo con ducha y mueble suspendido",
-        width: 2560,
-        height: 1827,
-        anchos: {
-          768: "2022/06/Bano-768x548.jpg",
-          1024: "2022/06/Bano-1024x731.jpg",
-          1536: "2022/06/Bano-1536x1096.jpg",
-          2560: "2022/06/Bano-scaled.jpg",
-        },
+        src: laBano,
       },
     ],
   },
@@ -159,83 +116,35 @@ export const promociones: Promocion[] = [
     galeria: [
       {
         alt: "Chalets pareados y piscina comunitaria al atardecer",
-        width: 1080,
-        height: 720,
-        anchos: {
-          768: "2025/03/Sintrac--768x512.jpg",
-          1024: "2025/03/Sintrac--1024x683.jpg",
-          1080: "2025/03/Sintrac-.jpg",
-        },
+        src: pnConjunto,
       },
       {
         alt: "Acceso a la promoción desde la calle, con las viviendas al fondo",
-        width: 1080,
-        height: 559,
-        anchos: {
-          768: "2025/03/Sintrac-2-1-768x398.jpg",
-          1024: "2025/03/Sintrac-2-1-1024x530.jpg",
-          1080: "2025/03/Sintrac-2-1.jpg",
-        },
+        src: pnAcceso,
       },
       {
         alt: "Salón-comedor diáfano con salida al jardín y a la piscina",
-        width: 1080,
-        height: 600,
-        anchos: {
-          768: "2025/03/Sintrac-6-768x427.jpg",
-          1024: "2025/03/Sintrac-6-1024x569.jpg",
-          1080: "2025/03/Sintrac-6.jpg",
-        },
+        src: pnSalon,
       },
       {
         alt: "Cocina abierta con isla y zona de office",
-        width: 1080,
-        height: 600,
-        anchos: {
-          768: "2025/03/Sintrac-3-768x427.jpg",
-          1024: "2025/03/Sintrac-3-1024x569.jpg",
-          1080: "2025/03/Sintrac-3.jpg",
-        },
+        src: pnCocina,
       },
       {
         alt: "Dormitorio principal con cabecero de madera y salida al jardín",
-        width: 1080,
-        height: 720,
-        anchos: {
-          768: "2025/03/Sintrac-8-768x512.jpg",
-          1024: "2025/03/Sintrac-8-1024x683.jpg",
-          1080: "2025/03/Sintrac-8.jpg",
-        },
+        src: pnDormitorioPrincipal,
       },
       {
         alt: "Dormitorio con zona de escritorio y vistas al jardín",
-        width: 1080,
-        height: 721,
-        anchos: {
-          768: "2025/03/Sintrac-7-768x513.jpg",
-          1024: "2025/03/Sintrac-7-1024x684.jpg",
-          1080: "2025/03/Sintrac-7.jpg",
-        },
+        src: pnDormitorioEscritorio,
       },
       {
         alt: "Baño principal con doble lavabo, ducha y bañera exenta",
-        width: 1080,
-        height: 800,
-        anchos: {
-          768: "2025/03/Sintrac-5-768x569.jpg",
-          1024: "2025/03/Sintrac-5-1024x759.jpg",
-          1080: "2025/03/Sintrac-5.jpg",
-        },
+        src: pnBano,
       },
       {
         alt: "Vestidor del dormitorio en suite",
-        width: 1080,
-        height: 1493,
-        anchos: {
-          741: "2025/03/Sintrac-4-741x1024.jpg",
-          768: "2025/03/Sintrac-4-768x1062.jpg",
-          1080: "2025/03/Sintrac-4.jpg",
-        },
+        src: pnVestidor,
       },
     ],
   },

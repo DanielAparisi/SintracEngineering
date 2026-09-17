@@ -1,10 +1,16 @@
 ---
 /**
- * Hueco de reserva de una foto: se ve mientras la imagen carga y se queda si
- * falla. Va detrás de la `<img>`, así que el contenedor debe ser `relative`.
+ * Hueco de reserva de una foto: se ve mientras la imagen carga. Va detrás de
+ * la `<picture>`, así que el contenedor debe ser `relative`.
  *
  * Existe como componente porque el mismo SVG estaba pegado en cuatro sitios y
  * ya divergía en el tamaño.
+ *
+ * Antes traía además un script que desvanecía las fotos que no cargaban: las
+ * imágenes venían de la biblioteca de WordPress y podían haberse borrado allí.
+ * Ahora se importan de `src/assets/` y las resuelve el build, así que una foto
+ * que falte es un error de compilación, no un hueco roto en producción; el
+ * script sobraba y solo añadía JavaScript a todas las páginas.
  */
 interface Props {
   /** Lado del icono en píxeles. 36 en el collage, 48 en las fotos grandes. */
@@ -32,27 +38,3 @@ const { size = 48 } = Astro.props;
     <circle cx="9" cy="9" r="2"></circle>
   </svg>
 </div>
-
-<script>
-  /**
-   * Desvanece las fotos que no cargan para que se vea el hueco de reserva.
-   *
-   * Sustituye al `onerror="this.style.display='none'"` que llevaba cada `<img>`
-   * en línea: un handler inline rompe cualquier CSP que se añada más adelante.
-   * Vive aquí, y no en `RemoteImage`, porque el placeholder es lo que acompaña
-   * a toda imagen remota del sitio, tenga o no variantes de WordPress. Astro
-   * agrupa el script una sola vez por página, no uno por imagen.
-   */
-  const ocultar = (img: HTMLImageElement) => {
-    img.style.opacity = "0";
-  };
-
-  document
-    .querySelectorAll<HTMLImageElement>("img[data-remote-image]")
-    .forEach((img) => {
-      // `complete` con ancho 0 significa que la carga ya falló antes de que
-      // este script llegara a registrarse; el evento `error` ya no se emitirá.
-      if (img.complete && img.naturalWidth === 0) ocultar(img);
-      img.addEventListener("error", () => ocultar(img));
-    });
-</script>

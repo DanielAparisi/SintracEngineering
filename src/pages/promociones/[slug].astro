@@ -15,13 +15,9 @@ import Gallery from "../../components/Gallery.astro";
 import Button from "../../components/ui/Button.astro";
 import EstadoBadge from "../../components/ui/EstadoBadge.astro";
 import ImagePlaceholder from "../../components/ui/ImagePlaceholder.astro";
-import RemoteImage from "../../components/ui/RemoteImage.astro";
-import {
-  promociones,
-  portada,
-  fotoSrc,
-  type Promocion,
-} from "../../data/promociones";
+import Photo from "../../components/ui/Photo.astro";
+import { getImage } from "astro:assets";
+import { promociones, portada, type Promocion } from "../../data/promociones";
 import { company } from "../../data/company";
 
 export function getStaticPaths() {
@@ -58,13 +54,27 @@ const ficha = [
 ].filter((d): d is { etiqueta: string; valor: string } => Boolean(d.valor));
 
 const mapsQuery = encodeURIComponent(promocion.ubicacion);
+
+/**
+ * Previsualización al compartir la ficha. Se recorta a 1200×630 —la proporción
+ * que esperan Open Graph y Twitter— y se fuerza JPEG porque varios lectores de
+ * enlaces (WhatsApp entre ellos) no interpretan AVIF y se quedarían sin imagen.
+ * La URL ha de ser absoluta: quien la lee no es el navegador, sino un bot.
+ */
+const ogImage = await getImage({
+  src: cubierta.src,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  format: "jpeg",
+});
 ---
 
 <Layout
   title={`${promocion.nombre} | ${company.name}`}
   description={promocion.descripcion.slice(0, 155)}
   keywords={`${promocion.nombre}, obra nueva ${promocion.ubicacion}, promoción inmobiliaria, ${company.name}`}
-  image={fotoSrc(cubierta)}
+  image={new URL(ogImage.src, Astro.site).href}
 >
   <SectionContainer class="pt-12 pb-24 md:pt-16">
     <!-- Migas -->
@@ -133,7 +143,7 @@ const mapsQuery = encodeURIComponent(promocion.ubicacion);
         class="relative w-full lg:w-[46%] shrink-0 aspect-4/3 sm:aspect-16/10 rounded-2xl overflow-hidden bg-surface-muted order-1 lg:order-2 lg:sticky lg:top-20"
       >
         <ImagePlaceholder />
-        <RemoteImage
+        <Photo
           foto={cubierta}
           sizes="(min-width: 1024px) 46vw, 92vw"
           priority
