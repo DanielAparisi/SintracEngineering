@@ -56,7 +56,14 @@ export interface Promocion {
   /** Año de entrega si está entregada, o previsión de entrega si está en obras. */
   year: string;
   viviendas: string;
+  /**
+   * Periodo de obra ("2021 – 2023"). Opcional: de las promociones antiguas no
+   * consta y la ficha omite la fila en vez de inventarse un dato.
+   * TODO(negocio): rellenar cuando se confirmen las fechas reales de obra.
+   */
+  periodo?: string;
   descripcion: string;
+
   /** Fotos propias de la promoción. La primera hace de portada en el listado. */
   galeria: Foto[];
 }
