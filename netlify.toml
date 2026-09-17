@@ -1,0 +1,11 @@
+# Despliegue en Netlify. Astro genera un sitio estático, así que basta con
+# publicar `dist/`; no hace falta adapter ni funciones.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# El sitio es 100% estático: cualquier ruta que no exista es un 404 real,
+# no una SPA que deba reescribirse a index.html.
