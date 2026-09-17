@@ -11,6 +11,8 @@
  * a la derecha, y las dos anchas a todo el ancho debajo.
  * Desktop (4 col x 2 filas): el collage original.
  */
+import { company } from "../data/company";
+
 const fotos = [
   {
     src: "https://sintracengineering.es/wp-content/uploads/2022/03/IMG_6220.jpg",
@@ -47,9 +49,9 @@ const fotos = [
  * líneas) en lugar de un `flex-wrap` que rompía de forma irregular.
  */
 const cifras = [
-  { valor: "+22", etiqueta: "Años de trayectoria" },
-  { valor: "+3", etiqueta: "Proyectos entregados" },
-  { valor: "SANSE", etiqueta: "Norte de Madrid" },
+  { valor: `+${company.yearsOfExperience}`, etiqueta: "Años de trayectoria" },
+  { valor: company.deliveredProjects, etiqueta: "Proyectos entregados" },
+  { valor: "SANSE", etiqueta: company.areaServed.region },
 ];
 ---
 

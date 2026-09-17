@@ -52,6 +52,14 @@ export const company = {
 
   email: "info@sintracengineering.es",
 
+  /**
+   * Obras entregadas. Estaba escrito como "+50" en el hero y "+3" en el
+   * collage del banner, mientras el texto de "Nuestra historia" dice "más de
+   * cincuenta obras entregadas". Se toma la cifra del texto como buena.
+   * TODO(negocio): confirmar el número real de obras entregadas.
+   */
+  deliveredProjects: "+50",
+
   openingHours: {
     days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] as const,
     daysLabel: "Lunes – Viernes",

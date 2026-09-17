@@ -1,5 +1,17 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
+import { company } from "../data/company";
+
+/**
+ * Cifras del hero. Antes estaban escritas a mano ("+19", "+50") y ya no
+ * coincidían ni con el collage de `MainBanner` ni entre sí; ahora las tres
+ * salen de `company.ts`, que es donde se corrigen de una vez.
+ */
+const cifras = [
+  { valor: `+${company.yearsOfExperience}`, etiqueta: "Años de experiencia" },
+  { valor: company.deliveredProjects, etiqueta: "Proyectos entregados" },
+  { valor: "SANSE", etiqueta: company.areaServed.region },
+];
 ---
 
 <SectionContainer id="hero" class="py-28 min-h-screen flex items-center">
@@ -11,7 +23,7 @@ import SectionContainer from "./SectionContainer.astro";
       <span
         class="text-xs font-semibold tracking-[0.15em] uppercase text-white border border-(--color-accent) rounded-full px-3 py-1 w-fit bg-(--color-accent)"
       >
-        Desde 2003 · San Sebastián de los Reyes
+        Desde {company.foundingYear} · {company.areaServed.primary}
       </span>
 
       <h1
@@ -23,20 +35,21 @@ import SectionContainer from "./SectionContainer.astro";
       <p
         class="text-lg text-(--color-text-secondary) leading-relaxed max-w-md"
       >
-        Más de 19 años desarrollando obra nueva residencial y promociones
-        inmobiliarias en el norte de Madrid. Calidad, compromiso y experiencia
-        en cada proyecto.
+        Más de {company.yearsOfExperience} años desarrollando obra nueva
+        residencial y promociones inmobiliarias en el {
+          company.areaServed.regionInline
+        }. Calidad, compromiso y experiencia en cada proyecto.
       </p>
 
       <div class="flex gap-3 flex-wrap">
         <a
-          href="#proyectos"
+          href="/#proyectos"
           class="px-6 py-3 rounded-full bg-(--color-cta-bg) text-(--color-cta-text) font-medium text-sm no-underline transition-[opacity,transform] duration-150 hover:opacity-75 hover:-translate-y-px"
         >
           Ver proyectos
         </a>
         <a
-          href="#contacto"
+          href="/#contacto"
           class="px-6 py-3 rounded-full border-2 border-(--color-accent) text-(--color-accent-dark) font-medium text-sm no-underline transition-[background,transform,color] duration-150 hover:bg-(--color-accent) hover:text-white hover:-translate-y-px"
         >
           Contactar
@@ -45,24 +58,18 @@ import SectionContainer from "./SectionContainer.astro";
 
       <!-- Stats -->
       <div class="flex gap-12 pt-8 border-t-2 border-(--color-accent)">
-        <div>
-          <p class="text-3xl font-bold text-(--color-accent)">+19</p>
-          <p class="text-xs text-(--color-text-muted) mt-0.5">
-            Años de experiencia
-          </p>
-        </div>
-        <div>
-          <p class="text-3xl font-bold text-(--color-accent)">+50</p>
-          <p class="text-xs text-(--color-text-muted) mt-0.5">
-            Proyectos realizados
-          </p>
-        </div>
-        <div>
-          <p class="text-3xl font-bold text-(--color-accent)">SANSE</p>
-          <p class="text-xs text-(--color-text-muted) mt-0.5">
-            Norte de Madrid
-          </p>
-        </div>
+        {
+          cifras.map((cifra) => (
+            <div>
+              <p class="text-3xl font-bold text-(--color-accent)">
+                {cifra.valor}
+              </p>
+              <p class="text-xs text-(--color-text-muted) mt-0.5">
+                {cifra.etiqueta}
+              </p>
+            </div>
+          ))
+        }
       </div>
     </div>
 
