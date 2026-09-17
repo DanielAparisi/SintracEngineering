@@ -1,6 +1,5 @@
 ---
 import "@fontsource-variable/onest";
-import Background from "../components/Background.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
@@ -14,11 +13,18 @@ interface Props {
   image?: string;
 }
 
+/**
+ * URL canónica de la página. Se construye contra `site` (astro.config.mjs) en
+ * vez de usar `Astro.url.href`, que en dev apunta a localhost y en build al
+ * host desde el que se compile.
+ */
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
 const {
   title,
   description,
   keywords = "constructora inmobiliaria Madrid, obra nueva Madrid, constructora San Sebastián de los Reyes, promociones inmobiliarias Madrid norte, empresa constructora SANSE, Sintrac Engineering",
-  image = "https://sintracengineering.es/og-image.jpg",
+  image = new URL("/og-image.jpg", Astro.site).href,
 } = Astro.props;
 
 /**
@@ -107,7 +113,7 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Sintrac Engineering" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:image" content={image} />
@@ -119,7 +125,7 @@ const jsonLd = {
     <meta name="twitter:image" content={image} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href={Astro.url.href} />
+    <link rel="canonical" href={canonical} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
@@ -128,7 +134,6 @@ const jsonLd = {
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
-    <Background />
     <Header />
     <main id="contenido" tabindex="-1">
       <slot />
